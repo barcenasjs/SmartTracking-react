@@ -10,13 +10,13 @@ function App() {
         </title>
       </head> 
       
-      <header>
+      <header className="App-header">
         <h1>
           Smart Tracking
         </h1>
       </header>
       <Router>
-          <nav>
+          <nav className="nav-bar">
             <ul>
                 <li><Link to="/">Home</Link></li>
                 <li><Link to="/Maps">Maps</Link></li>

@@ -16,9 +16,9 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 50vh;
+  min-height: 20vh;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
@@ -36,4 +36,21 @@
   to {
     transform: rotate(360deg);
   }
+}
+.nav-bar{
+  color: rgb(0, 0, 0); 
+  background-color: rgba(19, 161, 180, 0.876);
+  flex-direction: row;
+  font-style: none;
+  font-size: 35px;  
+  font-weight: 500px;
+}
+.nav-bar li{
+  list-style: none;
+  
+  display: inline-block;
+  padding-inline: 5px;
+}
+.Link{
+ 
 }
