@@ -6,7 +6,7 @@ function App() {
     <div className="App">
       <head>
         <title>        
-        {document.title='Pruea'}
+        {document.title='SmartTracking'}
         </title>
       </head> 
       
