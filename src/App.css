@@ -59,15 +59,5 @@
     margin-block-end: 0px;
 }
 
-.backsquater {
-    background-color: rgba(19, 161, 180, 0.876);
-    margin: 30px 60px;
-    height: 500px;
-    top: -50px;
-    border-radius: 20px;
-}
 
-.backsquater p {
-    margin-block-start: 0px;
-    padding: 10px;
-}
+

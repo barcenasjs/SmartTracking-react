@@ -1,5 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
+import Box  from './Components/Box';
+
+
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 function App() {
@@ -27,24 +30,18 @@ function App() {
           </ul> 
         </nav> 
         <Route exact path = "/" >
-          <p> hello </p> 
+          <Box contenido ="Home"></Box>
         </Route> 
         <Route path = "/Maps" >
-          <p> help </p> 
+          <Box contenido ="Maps"></Box>
         </Route> 
-          <Route path = "/Log" >
-        <p > help </p> 
-          </Route> 
+        <Route path = "/Log" >
+          <Box contenido ="Log"></Box>
+        </Route> 
+        
         <Route path = "/About_us" >
-          <div className="backsquater">
-          <p> Este proyecto esta elaborado por los estudiantes tlataltal con el fin 
-            de visualizar los datos de la ubicación geografica enviados desde los dispositivos gps</p> 
+          <Box contenido = "About us"></Box>  
           
-          
-          
-          
-          
-          </div>
         </Route>
 
 
