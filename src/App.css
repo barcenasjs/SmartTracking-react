@@ -25,9 +25,8 @@
     padding-top: 10px;
     padding-bottom: 10px;
 }
-
 .App-link {
-    color: #fb6661;
+    color: #5202ad;
 }
 
 @keyframes App-logo-spin {
@@ -51,7 +50,21 @@
 .nav-bar li {
     list-style: none;
     display: inline-block;
-    padding-inline: 50px;
+    
+    
+}
+.menu{
+    text-decoration: none; 
+    padding-inline: 30px;
+    color: #7700ff;
+    border-radius: 0px; 
+}
+
+
+.menu:hover{
+    background-color: #01f7ff;
+    border-radius: 20px; 
+    transition: all ease-in-out 250ms ,border-radius ease-in-out 0.25s;
 }
 
 .nav-bar ul {

@@ -1,11 +1,33 @@
 import logo from './logo.svg';
 import './App.css';
-import Box  from './Components/Box';
 
+import Box  from './Components/Box';
+import React, { Component } from 'react';
 
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
-function App() {
+class App extends Component {
+  state = {
+    data: null
+  };
+
+  componentDidMount() {
+    this.escucha()
+      .then(res => this.setState({data: res.express}))
+      .catch(err => console.log(err));
+  }
+  escucha(){
+    async () => {
+      const response = await fetch(':3030');
+      const body = await response.json();
+  
+      if (response.status !== 200) {
+        throw Error(body.message) 
+      }
+      return body;
+    }
+  }
+  render(){
     return ( <div className = "App" >
         <head >
           <title>
@@ -17,16 +39,16 @@ function App() {
         <img src = { logo } className = "App-logo" alt = "logo"/>
         &nbsp;&nbsp;
         <h1>
-        Smart Tracking 
-        </h1> 
+        Smart Tracking
+        </h1>
         </header> 
         <Router>
         <nav className = "nav-bar">
           <ul>
-              <li> < Link to = "/"> Home </Link></li>
-              <li> < Link to = "/Maps"> Maps </Link></li>
-              <li> < Link to = "/Log" > Log </Link></li >
-              <li> < Link to = "/About_us" > About us </Link></li >
+              <li> < Link className ="menu" to = "/"  > Home </Link></li>
+              <li> < Link className ="menu" to = "/Maps" > Maps </Link></li>
+              <li> < Link className ="menu" to = "/Log" > Log </Link></li >
+              <li> < Link className ="menu" to = "/About_us" > About us </Link></li >
           </ul> 
         </nav> 
         <Route exact path = "/" >
@@ -52,6 +74,8 @@ function App() {
 
             </div>
         );
-    }
-
-    export default App;
+  
+      }
+  
+}
+export default App;
