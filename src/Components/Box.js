@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Aboutus  from './Aboutus';
 import Logs from './Logs';
+import Maps from './Map';
 export default class Box extends Component {
     Boxstyle(){
         return{
@@ -17,9 +18,7 @@ export default class Box extends Component {
             return <p style={{"margin-block-start": "0px",
         padding: "10px"}}></p>
         }else if(this.props.contenido === "Maps"){
-            return <p style={{"margin-block-start": "0px",
-            padding: "10px"}}>Este proyecto esta elaborado por los estudiantes tlataltal con el fin
-            de visualizar los datos de la ubicación geografica enviados desde los dispositivos gps</p>
+            return <Maps data={this.props.data}></Maps>
         }else if(this.props.contenido === "Log"){
             return <Logs  data={this.props.data}></Logs>
         }else if(this.props.contenido === "About us"){
