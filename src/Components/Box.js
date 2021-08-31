@@ -15,11 +15,10 @@ export default class Box extends Component {
     Content(props){
         if (this.props.contenido === "Home"){
             return <p style={{"margin-block-start": "0px",
-        padding: "10px"}}>Este proyecto esta elaborado por los estudiantes tlataltal con el fin 
-        de visualizar los datos de la ubicación geografica enviados desde los dispositivos gps</p>
+        padding: "10px"}}>{JSON.stringify(this.props.data)}</p>
         }else if(this.props.contenido === "Maps"){
             return <p style={{"margin-block-start": "0px",
-            padding: "10px"}}>Este proyecto esta elaborado por los estudiantes tlataltal con el fin 
+            padding: "10px"}}>Este proyecto esta elaborado por los estudiantes tlataltal con el fin
             de visualizar los datos de la ubicación geografica enviados desde los dispositivos gps</p>
         }else if(this.props.contenido === "Log"){
             return <Logs></Logs>

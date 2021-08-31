@@ -1,12 +1,9 @@
-const net =require("net");
-const port=(3030);
-const Server=  new  net.createServer((socket)=>{
-    socket.on("data",(data)=>{
-        
-        
-    })
+import io from 'socket.io-client';
 
-}
-)
-Server.listen(port);
-  console.log(port)
+export const on = (cb) => {
+    const connection = io('http://bysj.servegame.com:3030');
+    connection.on('connect_error', err => {
+        console.log(`connect_error due to ${err.message}`);
+    });
+    connection.on('tcpudp created', cb(connection));
+};
