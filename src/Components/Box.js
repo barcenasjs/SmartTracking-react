@@ -21,7 +21,7 @@ export default class Box extends Component {
             padding: "10px"}}>Este proyecto esta elaborado por los estudiantes tlataltal con el fin
             de visualizar los datos de la ubicación geografica enviados desde los dispositivos gps</p>
         }else if(this.props.contenido === "Log"){
-            return <Logs></Logs>
+            return <Logs  data={this.props.data}></Logs>
         }else if(this.props.contenido === "About us"){
             return  <Aboutus></Aboutus>
         }

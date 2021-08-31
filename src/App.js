@@ -3,7 +3,6 @@ import './App.css';
 
 import Box from './Components/Box';
 import React, {useEffect, useState} from 'react';
-
 import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
 import {on} from "./Server";
 
