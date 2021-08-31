@@ -15,7 +15,7 @@ export default class Box extends Component {
     Content(props){
         if (this.props.contenido === "Home"){
             return <p style={{"margin-block-start": "0px",
-        padding: "10px"}}>{JSON.stringify(this.props.data)}</p>
+        padding: "10px"}}></p>
         }else if(this.props.contenido === "Maps"){
             return <p style={{"margin-block-start": "0px",
             padding: "10px"}}>Este proyecto esta elaborado por los estudiantes tlataltal con el fin

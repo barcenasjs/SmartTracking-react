@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import "./Log.css";
-import moment from "moment";
+
 
 export default class Logs extends Component {
+  
   render() {
-    const date = new Date();
-
+    
+    
     return (
       <div className="grid">
         <div className="a"></div>
@@ -15,7 +16,7 @@ export default class Logs extends Component {
           <ul>
             <li>Latitud</li>
             <li>
-              <textarea>{"Lat: " + this.props.data._geoloc.lat}</textarea>
+              <div className="faketextArea" >{this.props.data._geoloc.lat}</div>
             </li>
           </ul>
         </div>
@@ -24,7 +25,7 @@ export default class Logs extends Component {
           <ul>
             <li>Longuitud</li>
             <li>
-              <textarea>{"Lng: " + this.props.data._geoloc.lng}</textarea>
+              <div className="faketextArea" >{this.props.data._geoloc.lng}</div>
             </li>
           </ul>
         </div>
@@ -35,7 +36,7 @@ export default class Logs extends Component {
           <ul>
             <li>Fecha</li>
             <li>
-              <textarea>{moment(date).format("YYYY-MM-DD")}</textarea>
+              <div className="faketextArea" >{this.props.data._geoloc.fecha}</div>
             </li>
           </ul>
         </div>
@@ -44,7 +45,7 @@ export default class Logs extends Component {
           <ul>
             <li>Hora</li>
             <li>
-              <textarea>{moment(date).format("HH:mm:ss")}</textarea>
+              <div className="faketextArea" >{this.props.data._geoloc.hora}</div>
             </li>
           </ul>
         </div>
