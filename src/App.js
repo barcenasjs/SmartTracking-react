@@ -11,29 +11,15 @@ class App extends Component {
     data: null
   };
 
-  componentDidMount() {
-    this.escucha()
-      .then(res => this.setState({data: res.express}))
-      .catch(err => console.log(err));
-  }
-  escucha(){
-    async () => {
-      const response = await fetch(':3030');
-      const body = await response.json();
-  
-      if (response.status !== 200) {
-        throw Error(body.message) 
-      }
-      return body;
-    }
-  }
+
+
   render(){
     return ( <div className = "App" >
         <head >
           <title>
-           { document.title = 'SmartTracking' } 
-           </title> 
-        </head> 
+           { document.title = 'SmartTracking' }
+           </title>
+        </head>
 
         <header className = "App-header" >
         <img src = { logo } className = "App-logo" alt = "logo"/>
@@ -41,7 +27,7 @@ class App extends Component {
         <h1>
         Smart Tracking
         </h1>
-        </header> 
+        </header>
         <Router>
         <nav className = "nav-bar">
           <ul>
@@ -49,21 +35,21 @@ class App extends Component {
               <li> < Link className ="menu" to = "/Maps" > Maps </Link></li>
               <li> < Link className ="menu" to = "/Log" > Log </Link></li >
               <li> < Link className ="menu" to = "/About_us" > About us </Link></li >
-          </ul> 
-        </nav> 
+          </ul>
+        </nav>
         <Route exact path = "/" >
           <Box contenido ="Home"></Box>
-        </Route> 
+        </Route>
         <Route path = "/Maps" >
           <Box contenido ="Maps"></Box>
-        </Route> 
+        </Route>
         <Route path = "/Log" >
           <Box contenido ="Log"></Box>
-        </Route> 
-        
+        </Route>
+
         <Route path = "/About_us" >
-          <Box contenido = "About us"></Box>  
-          
+          <Box contenido = "About us"></Box>
+
         </Route>
 
 
@@ -74,8 +60,8 @@ class App extends Component {
 
             </div>
         );
-  
+
       }
-  
+
 }
 export default App;
