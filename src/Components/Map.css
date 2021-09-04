@@ -1,7 +1,15 @@
 .mapa{
-    width:450px;
-    height:250px;
+    width: 330px;
+    height: 460px;
     
+    top: 20px;
+    margin-left: 20px;
+
+    border-radius: 20px;
     
-    border:0;
-    }
+}
+.pop{
+    background: white;
+    
+    padding: 1px
+}
