@@ -7,7 +7,7 @@ export default class Box extends Component {
         return{
             "background-color": "rgba(19, 161, 180, 0.876)",
             margin: "30px 60px",
-            height: "500px",
+            height: "800px",
             top: "-50px",
             "border-radius": "20px",
 
@@ -19,8 +19,6 @@ export default class Box extends Component {
         padding: "10px"}}></p>
         }else if(this.props.contenido === "Maps"){
             return <Maps data={this.props.data}></Maps>
-        }else if(this.props.contenido === "Log"){
-            return <Logs  data={this.props.data}></Logs>
         }else if(this.props.contenido === "About us"){
             return  <Aboutus></Aboutus>
         }
