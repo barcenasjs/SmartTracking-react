@@ -1,14 +1,31 @@
-import React,{ useState} from 'react'
+import React,{ useState,useEffect} from 'react'
 import "./Map.css"
-import  { GoogleMap, useJsApiLoader ,Marker,InfoWindow} from '@react-google-maps/api';
+import  { GoogleMap, useJsApiLoader ,Marker,InfoWindow,Polyline} from '@react-google-maps/api';
+
 
 export default function Map(props) {
     
     const [infoWindowVisible, setInfoWindowVisible] = useState(false);
-    const center = {
-        lat: props.data._geoloc.lat,
-        lng: props.data._geoloc.lng
-      };
+    
+    const [PollyneData,setPollyneData]=useState([]);
+    useEffect(()=>{
+      console.log(props.data)
+      if(props?.data[0]?._geoloc?.lng){
+        setPollyneData([...PollyneData,{lat:props.data[0]._geoloc.lat,lng:props.data[0]._geoloc.lng}])
+        console.info(PollyneData)
+      }
+      
+    },[props.data]) 
+
+
+    try {
+      const center = {lat: props.data[1]._geoloc.lat,
+        lng: props.data[1]._geoloc.lng,};
+    } catch  {
+      const center = {lat: 10.5,
+        lng: -74}; 
+    }
+    
     
     const { isLoaded } = useJsApiLoader({
       id: 'google-map-script',
@@ -23,25 +40,30 @@ export default function Map(props) {
         
         <GoogleMap
           mapContainerClassName="mapa"
-          center={center}
-          zoom={17}
+          center={PollyneData[0]}
+          zoom={12}
           id="map"
         >
-            <Marker
-                title={center.lat+","+center.lng}
-                position={center}
-                onClick={() =>{setInfoWindowVisible(true)}}
-                clickable={true}
-                animation="DROP"
+            
+            <Polyline
+            path={PollyneData}
+            options={{
+              strokeColor: '#FF0000',
+              strokeOpacity: 0.8,
+              strokeWeight: 2,
+              fillColor: '#FF0000',
+              fillOpacity: 0.35,
+              clickable: false,
+              draggable: false,
+              editable: false,
+              visible: true,
+              radius: 30000,
+              paths:PollyneData,
+              zIndex: 1}}
             >
-                {infoWindowVisible&&(<InfoWindow
-                    anchor={new window.google.maps.Point(0,-100)}
-                    onCloseClick={() =>{setInfoWindowVisible(false)}}
-                    >
-                        <div className="pop"><p>{center.lat+","+center.lng}</p></div>
 
-                </InfoWindow>)}
-            </Marker>  
+
+            </Polyline>
              <></>
         </GoogleMap>
         
