@@ -44,7 +44,7 @@ function App() {
                 Maps{" "}
               </Link>
             </li>
-
+            
             <li>
               <Link className="menu" to="/About_us">
                 {" "}
@@ -59,7 +59,7 @@ function App() {
         <Route path="/Maps">
           <Box contenido="Maps" data={Data}></Box>
         </Route>
-
+        
         <Route path="/About_us">
           <Box contenido="About us" data={Data}></Box>
         </Route>

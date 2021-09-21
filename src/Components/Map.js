@@ -5,8 +5,6 @@ import  { GoogleMap, useJsApiLoader ,Marker,InfoWindow,Polyline} from '@react-go
 
 export default function Map(props) {
     
-    const [infoWindowVisible, setInfoWindowVisible] = useState(false);
-    
     const [PollyneData,setPollyneData]=useState([]);
     useEffect(()=>{
       console.log(props.data)
@@ -18,13 +16,6 @@ export default function Map(props) {
     },[props.data]) 
 
 
-    try {
-      const center = {lat: props.data[1]._geoloc.lat,
-        lng: props.data[1]._geoloc.lng,};
-    } catch  {
-      const center = {lat: 10.5,
-        lng: -74}; 
-    }
     
     
     const { isLoaded } = useJsApiLoader({
@@ -41,10 +32,15 @@ export default function Map(props) {
         <GoogleMap
           mapContainerClassName="mapa"
           center={PollyneData[0]}
-          zoom={12}
+          zoom={14}
           id="map"
         >
-            
+            <Marker
+            position={PollyneData[PollyneData.length-1]}
+            >
+
+            </Marker>
+
             <Polyline
             path={PollyneData}
             options={{
@@ -61,8 +57,6 @@ export default function Map(props) {
               paths:PollyneData,
               zIndex: 1}}
             >
-
-
             </Polyline>
              <></>
         </GoogleMap>
