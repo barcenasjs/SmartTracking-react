@@ -15,17 +15,13 @@ function App() {
       fecha: "",
     },
   });
-
   useEffect(() => {
     on((connection) => (geoData) => {
       const date = new Date();
       const parseData = JSON.parse(geoData.position);
       parseData._geoloc["hora"] = moment(date).format("HH:mm:ss");
       parseData._geoloc["fecha"] = moment(date).format("DD-MM-YYYY");
-      setState(parseData); // ----> data
-      const a = 1;
-      const d = 1;
-      const f = 2
+      setState(parseData); // ----> data});
     });
   }, []);
 
