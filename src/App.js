@@ -7,25 +7,15 @@ import { BrowserRouter as Router, Link, Route } from "react-router-dom";
 import { on } from "./Server";
 import moment from "moment";
 function App() {
-  const [state, setState] = useState({
-    _geoloc: {
-      lat: "",
-      lng: "",
-      hora: "",
-      fecha: "",
-    },
-  });
+  const [Data, setData] = useState([]);
 
   useEffect(() => {
     on((connection) => (geoData) => {
       const date = new Date();
-      const parseData = JSON.parse(geoData.position);
-      parseData._geoloc["hora"] = moment(date).format("HH:mm:ss");
-      parseData._geoloc["fecha"] = moment(date).format("DD-MM-YYYY");
-      setState(parseData); // ----> data
-      const a = 1;
-      const d = 1;
-      const f = 2
+      
+      geoData._geoloc["hora"] = moment(date).format("HH:mm:ss");
+      geoData._geoloc["fecha"] = moment(date).format("DD-MM-YYYY");
+      setState([...Data,geoData]); // ----> data
     });
   }, []);
 
