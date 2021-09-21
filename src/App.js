@@ -60,16 +60,16 @@ function App() {
           </ul>
         </nav>
         <Route exact path="/">
-          <Box contenido="Home" data={state}></Box>
+          <Box contenido="Home" data={Data}></Box>
         </Route>
         <Route path="/Maps">
-          <Box contenido="Maps" data={state}></Box>
+          <Box contenido="Maps" data={Data}></Box>
         </Route>
         <Route path="/Log">
-          <Box contenido="Log" data={state}></Box>
+          <Box contenido="Log" data={Data}></Box>
         </Route>
         <Route path="/About_us">
-          <Box contenido="About us" data={state}></Box>
+          <Box contenido="About us" data={Data}></Box>
         </Route>
       </Router>
     </div>
