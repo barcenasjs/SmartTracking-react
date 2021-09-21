@@ -44,7 +44,11 @@ export default function Map(props) {
           zoom={12}
           id="map"
         >
-            
+            <Marker
+            position={PollyneData[PollyneData.length-1]}
+            >
+            </Marker>
+
             <Polyline
             path={PollyneData}
             options={{
