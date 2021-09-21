@@ -24,6 +24,7 @@ function App() {
       parseData._geoloc["fecha"] = moment(date).format("DD-MM-YYYY");
       setState(parseData); // ----> data
       const a = 1;
+      const d = 1;
     });
   }, []);
 
