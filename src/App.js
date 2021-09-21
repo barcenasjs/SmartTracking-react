@@ -12,7 +12,6 @@ function App() {
   useEffect(() => {
     on((connection) => (geoData) => {
       const date = new Date();
-      
       geoData._geoloc["hora"] = moment(date).format("HH:mm:ss");
       geoData._geoloc["fecha"] = moment(date).format("DD-MM-YYYY");
       setData([...Data,geoData]); // ----> data
@@ -45,12 +44,7 @@ function App() {
                 Maps{" "}
               </Link>
             </li>
-            <li>
-              <Link className="menu" to="/Log">
-                {" "}
-                Log{" "}
-              </Link>
-            </li>
+            
             <li>
               <Link className="menu" to="/About_us">
                 {" "}
@@ -65,9 +59,7 @@ function App() {
         <Route path="/Maps">
           <Box contenido="Maps" data={Data}></Box>
         </Route>
-        <Route path="/Log">
-          <Box contenido="Log" data={Data}></Box>
-        </Route>
+        
         <Route path="/About_us">
           <Box contenido="About us" data={Data}></Box>
         </Route>
