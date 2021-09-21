@@ -15,7 +15,7 @@ function App() {
       
       geoData._geoloc["hora"] = moment(date).format("HH:mm:ss");
       geoData._geoloc["fecha"] = moment(date).format("DD-MM-YYYY");
-      setState([...Data,geoData]); // ----> data
+      setData([...Data,geoData]); // ----> data
     });
   }, []);
 
