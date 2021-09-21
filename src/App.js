@@ -25,6 +25,7 @@ function App() {
       setState(parseData); // ----> data
       const a = 1;
       const d = 1;
+      const f = 2
     });
   }, []);
 
