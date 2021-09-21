@@ -16,16 +16,16 @@ function App() {
     },
   });
 
-    useEffect(() => {
-        on((connection) => (geoData) => {
-            const date= new Date();
-            const parseData = JSON.parse(geoData.position)
-            parseData._geoloc["hora"]= moment(date).format("HH:mm:ss");
-            parseData._geoloc["fecha"]= moment(date).format("DD-MM-YYYY")
-            setState(parseData); // ----> data
-
-        })
-    }, []);
+  useEffect(() => {
+    on((connection) => (geoData) => {
+      const date = new Date();
+      const parseData = JSON.parse(geoData.position);
+      parseData._geoloc["hora"] = moment(date).format("HH:mm:ss");
+      parseData._geoloc["fecha"] = moment(date).format("DD-MM-YYYY");
+      setState(parseData); // ----> data
+      const a = 1;
+    });
+  }, []);
 
   return (
     <div className="App">
