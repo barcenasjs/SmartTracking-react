@@ -5,8 +5,23 @@ import Box from "./Components/Box";
 import React, { useEffect, useState } from "react";
 import { on } from "./Server";
 import moment from "moment";
+import { write } from "./service/feathers";
 function App() {
   const [Data, setData] = useState([]);
+  const [positions, setPositions] = useState([]);
+
+  useEffect(() => {
+    write
+      .find({
+        query: {
+          $limit: 10000,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        setPositions(res.data);
+      });
+  }, []);
 
   useEffect(() => {
     on((connection) => (geoData) => {
@@ -14,7 +29,17 @@ function App() {
       const parseData = JSON.parse(geoData.position);
       parseData._geoloc["hora"] = moment(date).format("HH:mm:ss");
       parseData._geoloc["fecha"] = moment(date).format("DD-MM-YYYY");
-      setData(parseData); // ----> data
+      setData([parseData]); // ----> data
+      write
+        .find({
+          query: {
+            $limit: 10000,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          setPositions(res.data);
+        });
     });
   }, []);
 
@@ -30,7 +55,7 @@ function App() {
         <h1>Smart Tracking</h1>
       </header>
 
-      <Box contenido="Maps" data={Data}></Box>
+      <Box contenido="Maps" data={positions} realTime={Data}></Box>
     </div>
   );
 }
