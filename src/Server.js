@@ -1,7 +1,7 @@
 import io from "socket.io-client";
 
 export const on = (cb) => {
-    const connection = io('http://192.168.12.14:3030');
+    const connection = io('http://localhost:3030');
     connection.on('connect_error', err => {
         console.log(`connect_error due to ${err.message}`);
     });
