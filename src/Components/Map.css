@@ -1,6 +1,23 @@
+@import '~antd/dist/antd.css';
+.faketextArea {
+    background-color: white;
+    border: 1px solid black !important;
+    font-size: 16px !important;
+    padding: 8px !important;
+    overflow: hidden;
+    border-radius: 10px;
+    height: 24px;
+    width: 170px;
+    margin: auto;
+}
+.lista {
+    list-style: none;
+    font-size: 25px;
+    text-align: center
+}
 .mapa{
-    width: 450px;
-    height: 500px;
+    width: 97%;
+    height: 60%;
     
     top: 20px;
     margin-left: 20px;
