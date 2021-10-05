@@ -20,6 +20,7 @@ function App() {
       .then((res) => {
         console.log(res);
         setPositions(res.data);
+
       });
   }, []);
 

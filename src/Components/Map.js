@@ -31,11 +31,12 @@ export default function Map(props) {
     }
   }, [props.realTimeData]);
 
+
+
   useEffect(() => {}, []);
   useEffect(() => {
     if (props?.data[0]?.position) {
       if (Range.length !== 0) {
-        setRange([]);
         const positions = props.data
           .map((el) => {
             const objPositions = JSON.parse(el.position);
