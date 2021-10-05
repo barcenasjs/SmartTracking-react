@@ -19,6 +19,21 @@ export default function Map(props) {
   const [historyCount, setHistoryCount] = useState([]);
 
   useEffect(() => {
+    if (props?.data[0]?.position && historyCount.length === 0) {
+      const positions = props.data.map((el) => {
+        const objPositions = JSON.parse(el.position);
+
+        return {
+          lat: objPositions._geoloc.lat,
+          lng: objPositions._geoloc.lng,
+          date: objPositions._geoloc.date,
+        };
+      });
+      setHistoryCount([positions[positions.length - 1]]);
+    }
+  }, [props.data]);
+
+  useEffect(() => {
     if (props?.realTimeData[0]?._geoloc?.lng) {
       setHistoryCount([
         ...historyCount,
@@ -32,11 +47,9 @@ export default function Map(props) {
     }
   }, [props.realTimeData]);
 
-  
   useEffect(() => {
     if (props?.data[0]?.position) {
       if (Range.length !== 0) {
-        
         const positions = props.data
           .map((el) => {
             const objPositions = JSON.parse(el.position);
@@ -79,15 +92,12 @@ export default function Map(props) {
     const center = { lat: 10.5, lng: -74 };
   }
   const fecha = (m, ds) => {
-    if (ds[1]=="") {
-      
+    if (ds[1] == "") {
     } else {
       setRange(ds); //Async
       console.log(Range); //Sync
       setHistory(true);
     }
-    
-  
   };
 
   console.log(Range);
@@ -100,14 +110,22 @@ export default function Map(props) {
     <>
       <GoogleMap
         mapContainerClassName="mapa"
-        center={history ? PollyneData[PollyneData.length - 1] : historyCount[historyCount.length - 1]}
+        center={
+          history
+            ? PollyneData[PollyneData.length - 1]
+            : historyCount[historyCount.length - 1]
+        }
         zoom={14}
         id="map"
-        
       >
         <Marker
-        icon={imagen}
-        position={history ? PollyneData[PollyneData.length - 1] : historyCount[historyCount.length - 1]}></Marker>
+          icon={imagen}
+          position={
+            history
+              ? PollyneData[PollyneData.length - 1]
+              : historyCount[historyCount.length - 1]
+          }
+        ></Marker>
 
         <Polyline
           path={history ? PollyneData : historyCount}
@@ -123,8 +141,8 @@ export default function Map(props) {
             visible: true,
             radius: 30000,
             paths: history ? PollyneData : historyCount,
-            zIndex: 1}}
-          
+            zIndex: 1,
+          }}
         ></Polyline>
       </GoogleMap>
       <br></br>
@@ -135,7 +153,9 @@ export default function Map(props) {
             <li className="lista">Latitud</li>
             <li className="lista">
               <div className="faketextArea">
-                {history ? PollyneData[PollyneData.length - 1]?.lat : historyCount[historyCount.length - 1]?.lat}
+                {history
+                  ? PollyneData[PollyneData.length - 1]?.lat
+                  : historyCount[historyCount.length - 1]?.lat}
               </div>
             </li>
           </ul>
@@ -145,7 +165,9 @@ export default function Map(props) {
             <li className="lista">Longuitud</li>
             <li className="lista">
               <div className="faketextArea">
-              {history ? PollyneData[PollyneData.length - 1]?.lng : historyCount[historyCount.length - 1]?.lng}
+                {history
+                  ? PollyneData[PollyneData.length - 1]?.lng
+                  : historyCount[historyCount.length - 1]?.lng}
               </div>
             </li>
           </ul>
@@ -155,11 +177,13 @@ export default function Map(props) {
             <li className="lista">Fecha</li>
             <li className="lista">
               <div className="faketextArea">
-                {history ? moment(PollyneData[PollyneData.length - 1]?.date).format(
-                  "DD/MMMM/YYYY"
-                ) : moment(historyCount[historyCount.length - 1]?.date).format(
-                  "DD/MMMM/YYYY"
-                )}
+                {history
+                  ? moment(PollyneData[PollyneData.length - 1]?.date).format(
+                      "DD/MMMM/YYYY"
+                    )
+                  : moment(historyCount[historyCount.length - 1]?.date).format(
+                      "DD/MMMM/YYYY"
+                    )}
               </div>
             </li>
           </ul>
@@ -169,10 +193,13 @@ export default function Map(props) {
             <li className="lista">Hora</li>
             <li className="lista">
               <div className="faketextArea">
-                {history ?moment(PollyneData[PollyneData.length - 1]?.date).format(
-                  "hh:mm:ss A"
-                ): moment(historyCount[historyCount.length - 1]?.date).format("hh:mm:ss A"
-                )}
+                {history
+                  ? moment(PollyneData[PollyneData.length - 1]?.date).format(
+                      "hh:mm:ss A"
+                    )
+                  : moment(historyCount[historyCount.length - 1]?.date).format(
+                      "hh:mm:ss A"
+                    )}
               </div>
             </li>
           </ul>
@@ -182,14 +209,14 @@ export default function Map(props) {
             showTime={{ format: "HH:mm" }}
             format="YYYY-MM-DD HH:mm"
             onChange={fecha}
-            
           />
         </Col>
         <Col className="gutter-row" span={24}>
-          <Button onClick={()=>{
-            setHistory(false)
-          }}
-          disabled={!history}
+          <Button
+            onClick={() => {
+              setHistory(false);
+            }}
+            disabled={!history}
           >
             Tiempo Real
           </Button>
