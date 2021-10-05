@@ -7,7 +7,7 @@ export default class Box extends Component {
     return {
       "background-color": "rgba(19, 161, 180, 0.90)",
       margin: "30px 60px",
-      height: "800px",
+      height: "900px",
       top: "-50px",
       "border-radius": "20px",
     };
