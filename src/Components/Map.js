@@ -32,9 +32,7 @@ export default function Map(props) {
     }
   }, [props.realTimeData]);
 
-
-
-  useEffect(() => {}, []);
+  
   useEffect(() => {
     if (props?.data[0]?.position) {
       if (Range.length !== 0) {
@@ -105,27 +103,7 @@ export default function Map(props) {
         center={history ? PollyneData[PollyneData.length - 1] : historyCount[historyCount.length - 1]}
         zoom={14}
         id="map"
-        options={history ?{draggable: false,clickable: true}:{draggable: false,clickable: false}}
-        onClick={(e)=>{
-          return<>
-          <Marker position={e}></Marker>
-          <Circle center={e}
-          options = {{
-            strokeColor: '#FF0000',
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: '#FF0000',
-            fillOpacity: 0.35,
-            clickable: false,
-            draggable: false,
-            editable: false,
-            visible: true,
-            radius: 30,
-            zIndex: 1
-          }}
-          ></Circle>
-          </>
-        }}
+        
       >
         <Marker
         icon={imagen}
