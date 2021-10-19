@@ -143,7 +143,7 @@ export default function Map(props) {
     
         <div>
         <h3>
-          Vehículo
+          Vehículo 1
         </h3>
 
           <p>{history

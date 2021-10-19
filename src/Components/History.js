@@ -115,6 +115,7 @@ export default function Historico(props) {
         mapContainerClassName="mapa"
         center={PollyneData[1]}
         zoom={14}
+        onClick={(e)=>{console.log(e)}}
         id="map"
       >
         
@@ -137,11 +138,7 @@ export default function Historico(props) {
             paths: history ? PollyneData : historyCount ,
             zIndex: 1,
           }}
-          onClick={(e)=>{
-            console.log(e)
-            
-          }} 
-
+          
           >
         
 
@@ -149,11 +146,43 @@ export default function Historico(props) {
 
         <Marker
         icon={imagen}
-        position={ PollyneData[PollyneData.length - 1]
+        position={history? PollyneData[PollyneData.length - 1]:null
             
         }
+        clickable
+        onClick={()=> {
+
+          setMarkerInfo(!markerInfo)
+        }}
         
-        />
+        >{markerInfo?(<InfoWindow 
+            position={
+              history
+                ? PollyneData[PollyneData.length - 1]
+                : null
+            } > 
+        
+            <div>
+            <h3>
+              Vehículo 1
+            </h3>
+    
+              <p>{history
+                ? "Lng: "+(PollyneData[PollyneData.length - 1].lng)
+                : "Lng: "+(historyCount[historyCount.length - 1].lng) }</p>
+                <p>{history
+                  ? "Lat: "+(PollyneData[PollyneData.length - 1].lat)
+                  : "Lat: "+(historyCount[historyCount.length - 1].lat) }
+                </p>
+                <p>{history
+                  ? "Date: "+(PollyneData[PollyneData.length - 1].date)
+                  : "Date: "+(historyCount[historyCount.length - 1].date) }
+                </p>
+            </div>
+    
+            </InfoWindow>):null}
+        
+        </Marker>
 
       </GoogleMap>
       <br></br>
