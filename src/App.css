@@ -13,7 +13,26 @@
         animation: App-logo-spin infinite 20s linear;
     }
 }
-
+.nav-bar {
+    color: rgb(0, 0, 0);
+    background-color: rgba(19, 161, 180, 0.876);
+    flex-direction: row;
+    font-style: none;
+    font-size: 35px;
+    font-weight: 500px;
+}
+.nav-bar li {
+    list-style: none;
+    display: inline-block;
+    
+    
+}
+.menu{
+    text-decoration: none; 
+    padding-inline: 30px;
+    color: #7700ff;
+    border-radius: 0px; 
+}
 .App-header {
     background-color: #282c34;
     min-height: 20vh;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, DatePicker, Button } from "antd";
-import "./Map.css";
+import "./History.css";
 import imagen from "./parada-de-taxi.png";
 import {
   GoogleMap,
@@ -12,7 +12,7 @@ import {
 } from "@react-google-maps/api";
 import moment from "moment";
 
-export default function Map(props) {
+export default function Historico(props) {
   const { RangePicker } = DatePicker;
   const [PollyneData, setPollyneData] = useState([]);
   const [Range, setRange] = useState([]);
@@ -35,19 +35,7 @@ export default function Map(props) {
     }
   }, [props.data]);
 
-  useEffect(() => {
-    if (props?.realTimeData[0]?._geoloc?.lng) {
-      setHistoryCount([
-        ...historyCount,
-        {
-          lat: props.realTimeData[0]._geoloc.lat,
-          lng: props.realTimeData[0]._geoloc.lng,
-          date: props.realTimeData[0]._geoloc.date,
-        },
-      ]);
-      console.info(historyCount);
-    }
-  }, [props.realTimeData]);
+
 
   useEffect(() => {
     if (props?.data[0]?.position) {
@@ -110,63 +98,31 @@ export default function Map(props) {
 
   return isLoaded ? (
     <>
+        <br></br>
+    
+        <Row gutter={[16, 24]}>
+            
+            <Col className="gutter-row" span={24}>
+            <RangePicker
+                showTime={{ format: "HH:mm" }}
+                format="YYYY-MM-DD HH:mm"
+                onChange={fecha}
+            />
+            </Col>
+            
+        </Row>
       <GoogleMap
         mapContainerClassName="mapa"
-        center={
-          history
-            ? PollyneData[PollyneData.length - 1]
-            : historyCount[historyCount.length - 1]
-        }
+        center={PollyneData[1]}
         zoom={14}
         id="map"
       >
-        <Marker
-          icon={imagen}
-          position={
-            history
-              ? PollyneData[PollyneData.length - 1]
-              : historyCount[historyCount.length - 1]
-          }
-          clickable
-          onClick={()=> {
-
-            setMarkerInfo(!markerInfo)
-          }}
-          
-        >
-        {markerInfo?(<InfoWindow 
-        position={
-          history
-            ? PollyneData[PollyneData.length - 1]
-            : historyCount[historyCount.length - 1]
-        } >
-    
-        <div>
-        <h3>
-          Vehículo
-        </h3>
-
-          <p>{history
-            ? "Lng: "+(PollyneData[PollyneData.length - 1].lng)
-            : "Lng: "+(historyCount[historyCount.length - 1].lng) }</p>
-            <p>{history
-              ? "Lat: "+(PollyneData[PollyneData.length - 1].lat)
-              : "Lat: "+(historyCount[historyCount.length - 1].lat) }
-            </p>
-            <p>{history
-              ? "Date: "+(PollyneData[PollyneData.length - 1].date)
-              : "Date: "+(historyCount[historyCount.length - 1].date) }
-            </p>
-        </div>
-
-        </InfoWindow>):null}
-
-        </Marker>
+        
 
       
 
         <Polyline
-          path={history ? PollyneData : historyCount}
+          path={history ? PollyneData : historyCount }
           options={{
             strokeColor: "#FF0000",
             strokeOpacity: 0.8,
@@ -178,12 +134,29 @@ export default function Map(props) {
             editable: false,
             visible: true,
             radius: 30000,
-            paths: history ? PollyneData : historyCount,
+            paths: history ? PollyneData : historyCount ,
             zIndex: 1,
           }}
-        ></Polyline>
+          onClick={(e)=>{
+            console.log(e)
+            
+          }} 
+
+          >
+        
+
+        </Polyline>
+
+        <Marker
+        icon={imagen}
+        position={ PollyneData[PollyneData.length - 1]
+            
+        }
+        
+        />
+
       </GoogleMap>
-     
+      <br></br>
 
       
     </>

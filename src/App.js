@@ -3,6 +3,7 @@ import "./App.css";
 
 import Box from "./Components/Box";
 import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Link, Route } from "react-router-dom";
 import { on } from "./Server";
 import moment from "moment";
 
@@ -57,8 +58,23 @@ function App() {
         &nbsp;&nbsp;
         <h1>Smart Tracking</h1>
       </header>
+      <Router>
+                <nav className="nav-bar">
+                    <ul>
+                        <li>< Link className="menu" to="/"> Tiempo Real </Link></li>
+                        <li>< Link className="menu" to="/History"> Historico </Link></li>
 
-      <Box contenido="Maps" data={positions} realTime={Data}></Box>
+                    </ul>
+                </nav>
+                <Route exact path="/">
+                    <Box contenido="Maps" data={positions} realTime={Data}></Box>
+                </Route>
+                <Route path="/History">
+                <Box contenido="Historico" data={positions} realTime={Data}></Box>
+                </Route>
+      </Router>
+
+      
     </div>
   );
 }
