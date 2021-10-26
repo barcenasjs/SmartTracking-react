@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, DatePicker, Button } from "antd";
+import { Row, Col, DatePicker, Button, Select } from "antd";
 import "./Map.css";
 import imagen from "./parada-de-taxi.png";
 import {
@@ -19,6 +19,12 @@ export default function Map(props) {
   const [history, setHistory] = useState(false);
   const [historyCount, setHistoryCount] = useState([]);
   const [markerInfo,setMarkerInfo]=useState(false);
+
+  const { Option } = Select;
+  function handleChange(value) {
+    console.log(`selected ${value}`);
+  }
+
 
   useEffect(() => {
     if (props?.data[0]?.position && historyCount.length === 0) {
@@ -110,6 +116,16 @@ export default function Map(props) {
 
   return isLoaded ? (
     <>
+    <Row gutter={[16, 24]}>
+          <Col> <b></b> </Col>
+          <Col className="gutter-row" span={24}>
+            <Select defaultValue="Vehículo 1" style={{ width: 120 }} onChange={handleChange}>
+              <Option value="Vehículo 1">Vehículo 1</Option>
+              <Option value="Vehículo 2">Vehículo 2</Option>
+              <Option value="Ambos">Ambos</Option>  
+            </Select>
+          </Col>
+    </Row>
       <GoogleMap
         mapContainerClassName="mapa"
         center={
@@ -154,8 +170,12 @@ export default function Map(props) {
               : "Lat: "+(historyCount[historyCount.length - 1].lat) }
             </p>
             <p>{history
-              ? "Date: "+(PollyneData[PollyneData.length - 1].date)
-              : "Date: "+(historyCount[historyCount.length - 1].date) }
+              ? "Hora: "+(PollyneData[PollyneData.length - 1].date)
+              : "Hora: "+(historyCount[historyCount.length - 1].date)}
+            </p>
+            <p>{history
+              ? "Fecha: "+(PollyneData[PollyneData.length - 1].date)
+              : "Fecha: "+(historyCount[historyCount.length - 1].date)}
             </p>
         </div>
 

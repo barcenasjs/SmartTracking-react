@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, DatePicker, Button } from "antd";
+import { Row, Col, DatePicker, Button , Select} from "antd";
 import "./History.css";
 import imagen from "./parada-de-taxi.png";
 import {
@@ -72,6 +72,10 @@ export default function Historico(props) {
       }
     }
   }, [props.data, Range]);
+  const { Option } = Select;
+  function handleChange(value) {
+    console.log(`selected ${value}`);
+  }
 
   try {
     const center = {
@@ -102,13 +106,22 @@ export default function Historico(props) {
     
         <Row gutter={[16, 24]}>
             
-            <Col className="gutter-row" span={24}>
+            <Col className="gutter-row" span={12}>
             <RangePicker
                 showTime={{ format: "HH:mm" }}
                 format="YYYY-MM-DD HH:mm"
                 onChange={fecha}
             />
             </Col>
+            <Col className="gutter-row" span={12}>
+            
+            <Select defaultValue="Vehículo 1" style={{ width: 120 }} onChange={handleChange}>
+              <Option value="Vehículo 1">Vehículo 1</Option>
+              <Option value="Vehículo 2">Vehículo 2</Option>
+              <Option value="Ambos">Ambos</Option>  
+            </Select>
+            </Col>
+            
             
         </Row>
       <GoogleMap
