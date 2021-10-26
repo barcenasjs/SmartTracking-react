@@ -18,6 +18,8 @@ export default function Historico(props) {
   const [Range, setRange] = useState([]);
   const [history, setHistory] = useState(false);
   const [historyCount, setHistoryCount] = useState([]);
+  const [CAR1, setCAR1] = useState(true);
+  const [CAR2, setCAR2] = useState(false);
   const [markerInfo,setMarkerInfo]=useState(false);
 
   useEffect(() => {
@@ -72,10 +74,12 @@ export default function Historico(props) {
       }
     }
   }, [props.data, Range]);
+
   const { Option } = Select;
   function handleChange(value) {
     console.log(`selected ${value}`);
   }
+
 
   try {
     const center = {
@@ -103,9 +107,7 @@ export default function Historico(props) {
   return isLoaded ? (
     <>
         <br></br>
-    
         <Row gutter={[16, 24]}>
-            
             <Col className="gutter-row" span={12}>
             <RangePicker
                 showTime={{ format: "HH:mm" }}
@@ -115,7 +117,22 @@ export default function Historico(props) {
             </Col>
             <Col className="gutter-row" span={12}>
             
-            <Select defaultValue="Vehículo 1" style={{ width: 120 }} onChange={handleChange}>
+            <Select defaultValue="Vehículo 1" 
+            style={{ width: 120 }} 
+            onChange={(value)=>{if (value==="Vehículo 1"){
+              setCAR1(true)
+              setCAR2(false)
+
+            }else if(value==="Vehículo 2"){
+              setCAR1(false)
+              setCAR2(true)
+            }else{
+              setCAR1(true)
+              setCAR2(true)
+            }
+            console.log(value)
+            }}
+            >
               <Option value="Vehículo 1">Vehículo 1</Option>
               <Option value="Vehículo 2">Vehículo 2</Option>
               <Option value="Ambos">Ambos</Option>  
@@ -131,11 +148,8 @@ export default function Historico(props) {
         onClick={(e)=>{console.log(e)}}
         id="map"
       >
-        
-
-      
-
-        <Polyline
+      {/*Vehiculo 1*/}        
+      <Polyline
           path={history ? PollyneData : historyCount }
           options={{
             strokeColor: "#FF0000",
@@ -146,7 +160,7 @@ export default function Historico(props) {
             clickable: true,
             draggable: false,
             editable: false,
-            visible: true,
+            visible: CAR1,
             radius: 30000,
             paths: history ? PollyneData : historyCount ,
             zIndex: 1,
@@ -156,13 +170,19 @@ export default function Historico(props) {
         
 
         </Polyline>
-
+        
+        
         <Marker
         icon={imagen}
         position={history? PollyneData[PollyneData.length - 1]:null
             
         }
-        clickable
+        options={{
+          clickable:CAR1,
+          visible:CAR1
+
+        }}
+        
         onClick={()=> {
 
           setMarkerInfo(!markerInfo)
@@ -178,6 +198,68 @@ export default function Historico(props) {
             <div>
             <h3>
               Vehículo 1
+            </h3>
+    
+              <p>{history
+                ? "Lng: "+(PollyneData[PollyneData.length - 1].lng)
+                : "Lng: "+(historyCount[historyCount.length - 1].lng) }</p>
+                <p>{history
+                  ? "Lat: "+(PollyneData[PollyneData.length - 1].lat)
+                  : "Lat: "+(historyCount[historyCount.length - 1].lat) }
+                </p>
+                <p>{history
+                  ? "Date: "+(PollyneData[PollyneData.length - 1].date)
+                  : "Date: "+(historyCount[historyCount.length - 1].date) }
+                </p>
+            </div>
+    
+            </InfoWindow>):null}
+        
+        </Marker>
+        {/*Vehiculo 2*/}
+        <Polyline
+          path={history ? PollyneData : historyCount}
+          options={{
+            strokeColor: "#0000FF",
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: "#0000FF",
+            fillOpacity: 0.35,
+            clickable: true,
+            draggable: false,
+            editable: false,
+            visible: CAR2,
+            radius: 30000,
+            paths: history ? PollyneData : historyCount,
+            zIndex: 1,
+          }}
+        ></Polyline>  
+        <Marker
+        icon={imagen}
+        position={history? PollyneData[PollyneData.length - 1]:null
+            
+        }
+        options={{
+          clickable:CAR2,
+          visible:CAR2
+
+        }}
+        
+        onClick={()=> {
+
+          setMarkerInfo(!markerInfo)
+        }}
+        
+        >{markerInfo?(<InfoWindow 
+            position={
+              history
+                ? PollyneData[PollyneData.length - 1]
+                : null
+            } > 
+        
+            <div>
+            <h3>
+              Vehículo 2
             </h3>
     
               <p>{history

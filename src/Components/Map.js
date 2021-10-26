@@ -19,11 +19,12 @@ export default function Map(props) {
   const [history, setHistory] = useState(false);
   const [historyCount, setHistoryCount] = useState([]);
   const [markerInfo,setMarkerInfo]=useState(false);
-
   const { Option } = Select;
+
   function handleChange(value) {
     console.log(`selected ${value}`);
   }
+  
 
 
   useEffect(() => {
@@ -123,7 +124,7 @@ export default function Map(props) {
               <Option value="Vehículo 1">Vehículo 1</Option>
               <Option value="Vehículo 2">Vehículo 2</Option>
               <Option value="Ambos">Ambos</Option>  
-            </Select>
+            </Select> 
           </Col>
     </Row>
       <GoogleMap
@@ -145,10 +146,8 @@ export default function Map(props) {
           }
           clickable
           onClick={()=> {
-
             setMarkerInfo(!markerInfo)
           }}
-          
         >
         {markerInfo?(<InfoWindow 
         position={
@@ -202,6 +201,24 @@ export default function Map(props) {
             zIndex: 1,
           }}
         ></Polyline>
+        <Polyline
+          path={history ? PollyneData : historyCount}
+          options={{
+            strokeColor: "#0000FF",
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: "#0000FF",
+            fillOpacity: 0.35,
+            clickable: true,
+            draggable: false,
+            editable: false,
+            visible: true,
+            radius: 30000,
+            paths: history ? PollyneData : historyCount,
+            zIndex: 1,
+          }}
+        ></Polyline>
+
       </GoogleMap>
      
 
