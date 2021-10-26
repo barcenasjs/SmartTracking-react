@@ -52,7 +52,7 @@ function App() {
                 <nav className="nav-bar">
                     <ul>
                         <li>< Link className="menu" to="/"> Tiempo Real </Link></li>
-                        <li>< Link className="menu" to="/History"> Historico </Link></li>
+                        <li>< Link className="menu" to="/History"> Histórico </Link></li>
 
                     </ul>
                 </nav>

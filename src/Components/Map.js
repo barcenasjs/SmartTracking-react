@@ -27,9 +27,11 @@ export default function Map(props) {
   const [dataCar2, setDataCar2] = useState([]);
   console.log("hola" + JSON.stringify(dataCar1[dataCar1.length - 1]));
   const { Option } = Select;
+
   function handleChange(value) {
     console.log(`selected ${value}`);
   }
+  
 
   useEffect(() => {
     position
@@ -172,23 +174,16 @@ export default function Map(props) {
 
   return isLoaded ? (
     <>
-      <Row gutter={[16, 24]}>
-        <Col>
-          {" "}
-          <b></b>{" "}
-        </Col>
-        <Col className="gutter-row" span={24}>
-          <Select
-            defaultValue="Vehículo 1"
-            style={{ width: 120 }}
-            onChange={handleChange}
-          >
-            <Option value="Vehículo 1">Vehículo 1</Option>
-            <Option value="Vehículo 2">Vehículo 2</Option>
-            <Option value="Ambos">Ambos</Option>
-          </Select>
-        </Col>
-      </Row>
+    <Row gutter={[16, 24]}>
+          <Col> <b></b> </Col>
+          <Col className="gutter-row" span={24}>
+            <Select defaultValue="Vehículo 1" style={{ width: 120 }} onChange={handleChange}>
+              <Option value="Vehículo 1">Vehículo 1</Option>
+              <Option value="Vehículo 2">Vehículo 2</Option>
+              <Option value="Ambos">Ambos</Option>  
+            </Select> 
+          </Col>
+    </Row>
       <GoogleMap
         mapContainerClassName="mapa"
         center={
@@ -207,8 +202,8 @@ export default function Map(props) {
               : dataCar1[dataCar1.length - 1]
           }
           clickable
-          onClick={() => {
-            setMarkerInfo(!markerInfo);
+          onClick={()=> {
+            setMarkerInfo(!markerInfo)
           }}
         >
           {markerInfo ? (
@@ -264,6 +259,24 @@ export default function Map(props) {
             zIndex: 1,
           }}
         ></Polyline>
+        <Polyline
+          path={history ? PollyneData : historyCount}
+          options={{
+            strokeColor: "#0000FF",
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: "#0000FF",
+            fillOpacity: 0.35,
+            clickable: true,
+            draggable: false,
+            editable: false,
+            visible: true,
+            radius: 30000,
+            paths: history ? PollyneData : historyCount,
+            zIndex: 1,
+          }}
+        ></Polyline>
+
       </GoogleMap>
     </>
   ) : (
