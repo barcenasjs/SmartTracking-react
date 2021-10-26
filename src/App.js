@@ -7,45 +7,35 @@ import { BrowserRouter as Router, Link, Route } from "react-router-dom";
 import { on } from "./Server";
 import moment from "moment";
 
-import { write } from "./service/feathers";
+import { position } from "./service/feathers";
 
 function App() {
   const [Data, setData] = useState([]);
   const [positions, setPositions] = useState([]);
 
   useEffect(() => {
-    write
+
+    position
       .find({
-        query: {
-          $limit: 10000,
-        },
+        query: {},
       })
       .then((res) => {
         console.log(res);
         setPositions(res.data);
 
-      });
+      }).catch((e)=>{alert(e)})
   }, []);
-
-  useEffect(() => {
-    on((connection) => (geoData) => {
-      const date = new Date();
-      const parseData = JSON.parse(geoData.position);
-      parseData._geoloc["hora"] = moment(date).format("HH:mm:ss");
-      parseData._geoloc["fecha"] = moment(date).format("DD-MM-YYYY");
-      setData([parseData]); // ----> data
-      write
-        .find({
-          query: {
-            $limit: 10000,
-          },
-        })
-        .then((res) => {
-          console.log(res);
-          setPositions(res.data);
-        });
-    });
-  }, []);
+  //
+  // useEffect(() => {
+  //   on((connection) => (geoData) => {
+  //     // const date = new Date();
+  //     // const parseData = JSON.parse(geoData.position);
+  //     // parseData._geoloc["hora"] = moment(date).format("HH:mm:ss");
+  //     // parseData._geoloc["fecha"] = moment(date).format("DD-MM-YYYY");
+  //     // setData([parseData]); // ----> data
+  //
+  //   });
+  // }, []);
 
   return (
     <div className="App">
@@ -74,7 +64,7 @@ function App() {
                 </Route>
       </Router>
 
-      
+
     </div>
   );
 }

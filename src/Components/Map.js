@@ -8,9 +8,11 @@ import {
   Marker,
   Circle,
   Polyline,
-  InfoWindow
+  InfoWindow,
 } from "@react-google-maps/api";
 import moment from "moment";
+import { on } from "../Server";
+import { position } from "../service/feathers";
 
 export default function Map(props) {
   const { RangePicker } = DatePicker;
@@ -18,13 +20,67 @@ export default function Map(props) {
   const [Range, setRange] = useState([]);
   const [history, setHistory] = useState(false);
   const [historyCount, setHistoryCount] = useState([]);
-  const [markerInfo,setMarkerInfo]=useState(false);
+  const [markerInfo, setMarkerInfo] = useState(false);
 
+  //new data
+  const [dataCar1, setDataCar1] = useState([]);
+  const [dataCar2, setDataCar2] = useState([]);
+  console.log("hola" + JSON.stringify(dataCar1[dataCar1.length - 1]));
   const { Option } = Select;
   function handleChange(value) {
     console.log(`selected ${value}`);
   }
 
+  useEffect(() => {
+    position
+      .find({
+        query: {},
+      })
+      .then((res) => {
+        const car1 = res.data
+          .filter((el) => el.user_id === 1)
+          .map((el) => {
+            return { lat: parseFloat(el.lat), lng: parseFloat(el.lng) };
+          });
+        const car2 = res.data
+          .filter((el) => el.user_id === 2)
+          .map((el) => {
+            return { lat: parseFloat(el.lat), lng: parseFloat(el.lng) };
+          });
+
+        setDataCar1(car1);
+        setDataCar2(car2);
+      })
+      .catch((e) => {
+        alert(e);
+      });
+  }, []);
+
+  useEffect(() => {
+    on((connection) => (geoData) => {
+      position
+        .find({
+          query: {},
+        })
+        .then((res) => {
+          const car1 = res.data
+            .filter((el) => el.user_id === 1)
+            .map((el) => {
+              return { lat: parseFloat(el.lat), lng: parseFloat(el.lng) };
+            });
+          const car2 = res.data
+            .filter((el) => el.user_id === 2)
+            .map((el) => {
+              return { lat: parseFloat(el.lat), lng: parseFloat(el.lng) };
+            });
+          setDataCar1(car1);
+          setDataCar2(car2);
+        })
+        .catch((e) => {
+          alert(e);
+        });
+    });
+  }, []);
 
   useEffect(() => {
     if (props?.data[0]?.position && historyCount.length === 0) {
@@ -116,22 +172,29 @@ export default function Map(props) {
 
   return isLoaded ? (
     <>
-    <Row gutter={[16, 24]}>
-          <Col> <b></b> </Col>
-          <Col className="gutter-row" span={24}>
-            <Select defaultValue="Vehículo 1" style={{ width: 120 }} onChange={handleChange}>
-              <Option value="Vehículo 1">Vehículo 1</Option>
-              <Option value="Vehículo 2">Vehículo 2</Option>
-              <Option value="Ambos">Ambos</Option>  
-            </Select>
-          </Col>
-    </Row>
+      <Row gutter={[16, 24]}>
+        <Col>
+          {" "}
+          <b></b>{" "}
+        </Col>
+        <Col className="gutter-row" span={24}>
+          <Select
+            defaultValue="Vehículo 1"
+            style={{ width: 120 }}
+            onChange={handleChange}
+          >
+            <Option value="Vehículo 1">Vehículo 1</Option>
+            <Option value="Vehículo 2">Vehículo 2</Option>
+            <Option value="Ambos">Ambos</Option>
+          </Select>
+        </Col>
+      </Row>
       <GoogleMap
         mapContainerClassName="mapa"
         center={
           history
             ? PollyneData[PollyneData.length - 1]
-            : historyCount[historyCount.length - 1]
+            : dataCar1[dataCar1.length - 1]
         }
         zoom={14}
         id="map"
@@ -141,49 +204,48 @@ export default function Map(props) {
           position={
             history
               ? PollyneData[PollyneData.length - 1]
-              : historyCount[historyCount.length - 1]
+              : dataCar1[dataCar1.length - 1]
           }
           clickable
-          onClick={()=> {
-
-            setMarkerInfo(!markerInfo)
+          onClick={() => {
+            setMarkerInfo(!markerInfo);
           }}
-          
         >
-        {markerInfo?(<InfoWindow 
-        position={
-          history
-            ? PollyneData[PollyneData.length - 1]
-            : historyCount[historyCount.length - 1]
-        } >
-    
-        <div>
-        <h3>
-          Vehículo 1
-        </h3>
+          {markerInfo ? (
+            <InfoWindow
+              position={
+                history
+                  ? PollyneData[PollyneData.length - 1]
+                  : dataCar1[dataCar1.length - 1]
+              }
+            >
+              <div>
+                <h3>Vehículo 1</h3>
 
-          <p>{history
-            ? "Lng: "+(PollyneData[PollyneData.length - 1].lng)
-            : "Lng: "+(historyCount[historyCount.length - 1].lng) }</p>
-            <p>{history
-              ? "Lat: "+(PollyneData[PollyneData.length - 1].lat)
-              : "Lat: "+(historyCount[historyCount.length - 1].lat) }
-            </p>
-            <p>{history
-              ? "Hora: "+(PollyneData[PollyneData.length - 1].date)
-              : "Hora: "+(historyCount[historyCount.length - 1].date)}
-            </p>
-            <p>{history
-              ? "Fecha: "+(PollyneData[PollyneData.length - 1].date)
-              : "Fecha: "+(historyCount[historyCount.length - 1].date)}
-            </p>
-        </div>
-
-        </InfoWindow>):null}
-
+                <p>
+                  {history
+                    ? "Lng: " + PollyneData[PollyneData.length - 1].lng
+                    : "Lng: " + historyCount[historyCount.length - 1].lng}
+                </p>
+                <p>
+                  {history
+                    ? "Lat: " + PollyneData[PollyneData.length - 1].lat
+                    : "Lat: " + historyCount[historyCount.length - 1].lat}
+                </p>
+                <p>
+                  {history
+                    ? "Hora: " + PollyneData[PollyneData.length - 1].date
+                    : "Hora: " + historyCount[historyCount.length - 1].date}
+                </p>
+                <p>
+                  {history
+                    ? "Fecha: " + PollyneData[PollyneData.length - 1].date
+                    : "Fecha: " + historyCount[historyCount.length - 1].date}
+                </p>
+              </div>
+            </InfoWindow>
+          ) : null}
         </Marker>
-
-      
 
         <Polyline
           path={history ? PollyneData : historyCount}
@@ -203,9 +265,6 @@ export default function Map(props) {
           }}
         ></Polyline>
       </GoogleMap>
-     
-
-      
     </>
   ) : (
     <></>

@@ -1,9 +1,9 @@
 import io from "socket.io-client";
 
 export const on = (cb) => {
-  const connection = io("http://santiagojd.hopto.org:3030/");
+  const connection = io("http://192.168.20.22:3030/");
   connection.on("connect_error", (err) => {
     console.log(`connect_error due to ${err.message}`);
   });
-  connection.on("tcpudp created", cb(connection));
+  connection.on("position created", cb(connection));
 };
