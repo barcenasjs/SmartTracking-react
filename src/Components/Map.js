@@ -16,215 +16,12 @@ import { position } from "../service/feathers";
 
 export default function Map(props) {
   const { RangePicker } = DatePicker;
-  const [PollyneData, setPollyneData] = useState([]);
-  const [Range, setRange] = useState([]);
-  const [history, setHistory] = useState(false);
-  const [historyCount, setHistoryCount] = useState([]);
+ 
   const [markerInfo, setMarkerInfo] = useState(false);
-
-  //new data
-  const [dataCar1, setDataCar1] = useState([]);
-  const [historyCountCar1, setHistoryCountCar1] = useState([]);
-  const [dataCar2, setDataCar2] = useState([]);
-  const [historyCountCar2, setHistoryCountCar2] = useState([]);
-
-  console.log("soy data 2" + JSON.stringify(dataCar2));
+  const [markerInfo2, setMarkerInfo2] = useState(false);
   const { Option } = Select;
 
-  function handleChange(value) {
-    console.log(`selected ${value}`);
-  }
-
-  useEffect(() => {
-    position
-      .find({
-        query: {},
-      })
-      .then((res) => {
-        const car1 = res.data
-          .filter((el) => el.user_id === 1)
-          .map((el) => {
-            return { lat: parseFloat(el.lat), lng: parseFloat(el.lng) };
-          });
-        const car2 = res.data
-          .filter((el) => el.user_id === 9)
-          .map((el) => {
-            return { lat: parseFloat(el.lat), lng: parseFloat(el.lng) };
-          });
-        console.log(JSON.stringify(res));
-        setDataCar1(car1);
-        setDataCar2(car2);
-      })
-      .catch((e) => {
-        alert(e);
-      });
-  }, []);
-
-  useEffect(() => {
-    on((connection) => (geoData) => {
-      position
-        .find({
-          query: {},
-        })
-        .then((res) => {
-          const car1 = res.data
-            .filter((el) => el.user_id === 1)
-            .map((el) => {
-              return { lat: parseFloat(el.lat), lng: parseFloat(el.lng) };
-            });
-          const car2 = res.data
-            .filter((el) => el.user_id === 9)
-            .map((el) => {
-              return { lat: parseFloat(el.lat), lng: parseFloat(el.lng) };
-            });
-          setHistoryCountCar1(car1[car1.length - 1]);
-          setHistoryCountCar2(car2[car2.length - 1]);
-        })
-        .catch((e) => {
-          alert(e);
-        });
-    });
-  }, []);
-
-  useEffect(() => {
-    if (dataCar2[0].lng && dataCar1[0].lng) {
-      alert("hola");
-      if (Range.length !== 0) {
-        const positions1 = dataCar1
-          .map((el) => {
-            return {
-              lat: el.lat,
-              lng: el.lng,
-              date: el.date,
-            };
-          })
-          .filter((el) => {
-            return new Date(Range[0]).getTime() < new Date(el.date).getTime();
-          })
-          .filter((el) => {
-            return new Date(el.date).getTime() < new Date(Range[1]).getTime();
-          });
-
-        const positions2 = dataCar2
-          .map((el) => {
-            return {
-              lat: el.lat,
-              lng: el.lng,
-              date: el.date,
-            };
-          })
-          .filter((el) => {
-            return new Date(Range[0]).getTime() < new Date(el.date).getTime();
-          })
-          .filter((el) => {
-            return new Date(el.date).getTime() < new Date(Range[1]).getTime();
-          });
-        alert(JSON.stringify(positions1[0]));
-        setDataCar1(positions1);
-        setDataCar2(positions2);
-      } else {
-        const positions1 = props.data.map((el) => {
-          return {
-            lat: el.lat,
-            lng: el.lng,
-            date: el.date,
-          };
-        });
-        const positions2 = props.data.map((el) => {
-          return {
-            lat: el.lat,
-            lng: el.lng,
-            date: el.date,
-          };
-        });
-        setDataCar2(positions2);
-        setDataCar1(positions1);
-      }
-    }
-  }, [Range, dataCar1, dataCar2]);
-
-  useEffect(() => {
-    if (props?.data[0]?.position && historyCount.length === 0) {
-      const positions = props.data.map((el) => {
-        const objPositions = JSON.parse(el.position);
-
-        return {
-          lat: objPositions._geoloc.lat,
-          lng: objPositions._geoloc.lng,
-          date: objPositions._geoloc.date,
-        };
-      });
-      setHistoryCount([positions[positions.length - 1]]);
-    }
-  }, [props.data]);
-
-  useEffect(() => {
-    if (props?.realTimeData[0]?._geoloc?.lng) {
-      setHistoryCount([
-        ...historyCount,
-        {
-          lat: props.realTimeData[0]._geoloc.lat,
-          lng: props.realTimeData[0]._geoloc.lng,
-          date: props.realTimeData[0]._geoloc.date,
-        },
-      ]);
-      console.info(historyCount);
-    }
-  }, [props.realTimeData]);
-
-  useEffect(() => {
-    if (props?.data[0]?.position) {
-      if (Range.length !== 0) {
-        const positions = props.data
-          .map((el) => {
-            const objPositions = JSON.parse(el.position);
-
-            return {
-              lat: objPositions._geoloc.lat,
-              lng: objPositions._geoloc.lng,
-              date: objPositions._geoloc.date,
-            };
-          })
-          .filter((el) => {
-            return new Date(Range[0]).getTime() < new Date(el.date).getTime();
-          })
-          .filter((el) => {
-            return new Date(el.date).getTime() < new Date(Range[1]).getTime();
-          });
-
-        setPollyneData(positions);
-      } else {
-        const positions = props.data.map((el) => {
-          const objPositions = JSON.parse(el.position);
-
-          return {
-            lat: objPositions._geoloc.lat,
-            lng: objPositions._geoloc.lng,
-            date: objPositions._geoloc.date,
-          };
-        });
-        setPollyneData(positions);
-      }
-    }
-  }, [props.data, Range]);
-
-  try {
-    const center = {
-      lat: props.data[1]._geoloc.lat,
-      lng: props.data[1]._geoloc.lng,
-    };
-  } catch {
-    const center = { lat: 10.5, lng: -74 };
-  }
-  const fecha = (m, ds) => {
-    if (ds[1] == "") {
-    } else {
-      setRange(ds); //Async
-      console.log(Range); //Sync
-      setHistory(true);
-    }
-  };
-
+ 
   console.log(Range);
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
@@ -252,112 +49,14 @@ export default function Map(props) {
       </Row>
       <GoogleMap
         mapContainerClassName="mapa"
-        center={
-          history
-            ? PollyneData[PollyneData.length - 1]
-            : dataCar1[dataCar1.length - 1]
-        }
+        center={PollyneData[1]}
         zoom={14}
+        onClick={}
         id="map"
       >
-        <Marker
-          icon={imagen}
-          position={
-            history
-              ? PollyneData[PollyneData.length - 1]
-              : dataCar2[dataCar1.length - 1]
-          }
-          clickable
-          onClick={() => {
-            setMarkerInfo(!markerInfo);
-          }}
-        >
-          {markerInfo ? (
-            <InfoWindow
-              position={
-                history
-                  ? PollyneData[PollyneData.length - 1]
-                  : dataCar1[dataCar1.length - 1]
-              }
-            >
-              <div>
-                <h3>Vehículo 1</h3>
-
-                <p>
-                  {history
-                    ? "Lng: " + PollyneData[PollyneData.length - 1].lng
-                    : "Lng: " + historyCount[historyCount.length - 1].lng}
-                </p>
-                <p>
-                  {history
-                    ? "Lat: " + PollyneData[PollyneData.length - 1].lat
-                    : "Lat: " + historyCount[historyCount.length - 1].lat}
-                </p>
-                <p>
-                  {history
-                    ? "Hora: " + PollyneData[PollyneData.length - 1].date
-                    : "Hora: " + historyCount[historyCount.length - 1].date}
-                </p>
-                <p>
-                  {history
-                    ? "Fecha: " + PollyneData[PollyneData.length - 1].date
-                    : "Fecha: " + historyCount[historyCount.length - 1].date}
-                </p>
-              </div>
-            </InfoWindow>
-          ) : null}
-        </Marker>
-
-        <Marker
-          icon={imagen}
-          position={
-            history
-              ? PollyneData[PollyneData.length - 1]
-              : dataCar1[dataCar1.length - 1]
-          }
-          clickable
-          onClick={() => {
-            setMarkerInfo(!markerInfo);
-          }}
-        >
-          {markerInfo ? (
-            <InfoWindow
-              position={
-                history
-                  ? PollyneData[PollyneData.length - 1]
-                  : dataCar1[dataCar1.length - 1]
-              }
-            >
-              <div>
-                <h3>Vehículo 1</h3>
-
-                <p>
-                  {history
-                    ? "Lng: " + PollyneData[PollyneData.length - 1].lng
-                    : "Lng: " + historyCount[historyCount.length - 1].lng}
-                </p>
-                <p>
-                  {history
-                    ? "Lat: " + PollyneData[PollyneData.length - 1].lat
-                    : "Lat: " + historyCount[historyCount.length - 1].lat}
-                </p>
-                <p>
-                  {history
-                    ? "Hora: " + PollyneData[PollyneData.length - 1].date
-                    : "Hora: " + historyCount[historyCount.length - 1].date}
-                </p>
-                <p>
-                  {history
-                    ? "Fecha: " + PollyneData[PollyneData.length - 1].date
-                    : "Fecha: " + historyCount[historyCount.length - 1].date}
-                </p>
-              </div>
-            </InfoWindow>
-          ) : null}
-        </Marker>
-
-        <Polyline
-          path={history ? PollyneData : historyCount}
+      {/*Vehiculo 1*/}        
+      <Polyline
+          path={ }
           options={{
             strokeColor: "#FF0000",
             strokeOpacity: 0.8,
@@ -367,14 +66,57 @@ export default function Map(props) {
             clickable: true,
             draggable: false,
             editable: false,
-            visible: true,
+            visible: ,
             radius: 30000,
-            paths: history ? PollyneData : historyCount,
+            paths:  ,
             zIndex: 1,
           }}
-        ></Polyline>
+          
+          >
+        
+
+        </Polyline>
+        
+        
+        <Marker
+        icon={imagen}
+        position={
+            
+        }
+        options={{
+          clickable:,
+          visible:
+
+        }}
+        
+        onClick={()=> {
+
+          setMarkerInfo(!markerInfo)
+        }}
+        
+        >{markerInfo?(<InfoWindow 
+            position={
+              
+            } > 
+        
+            <div>
+            <h3>
+              Vehículo 1
+            </h3>
+    
+              <p>{"Lng: "+}</p>
+                <p>{ "Lat: " }
+                </p>
+                <p>{ "Date: "}
+                </p>
+            </div>
+    
+            </InfoWindow>):null}
+        
+        </Marker>
+        {/*Vehiculo 2*/}
         <Polyline
-          path={history ? PollyneData : historyCount}
+          path={}
           options={{
             strokeColor: "#0000FF",
             strokeOpacity: 0.8,
@@ -384,13 +126,53 @@ export default function Map(props) {
             clickable: true,
             draggable: false,
             editable: false,
-            visible: true,
+            visible: ,
             radius: 30000,
-            paths: history ? PollyneData : historyCount,
+            paths: ,
             zIndex: 1,
           }}
-        ></Polyline>
+        ></Polyline>  
+        <Marker
+        icon={imagen}
+        position={history? PollyneData[PollyneData.length - 1]:null
+            
+        }
+        options={{
+          clickable:,
+          visible:
+
+        }}
+        
+        onClick={()=> {
+
+          setMarkerInfo2(!markerInfo2)
+        }}
+        
+        >{markerInfo2?(<InfoWindow 
+            position={
+              history
+                ? PollyneData[PollyneData.length - 1]
+                : null
+            } > 
+        
+            <div>
+            <h3>
+              Vehículo 2
+            </h3>
+    
+                <p>{"Lng: "+}</p>
+                <p>{ "Lat: " }
+                </p>
+                <p>{ "Date: "}
+                </p>
+            </div>
+    
+            </InfoWindow>):null}
+        
+        </Marker>
+
       </GoogleMap>
+      <br></br>
     </>
   ) : (
     <></>
