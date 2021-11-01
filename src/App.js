@@ -5,9 +5,7 @@ import Box from "./Components/Box";
 import React, { useEffect, useState } from "react";
 import { on } from "./Server";
 import moment from "moment";
-
 import { write } from "./service/feathers";
-
 function App() {
   const [Data, setData] = useState([]);
   const [positions, setPositions] = useState([]);
