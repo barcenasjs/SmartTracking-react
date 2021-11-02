@@ -2,13 +2,14 @@ import React, { Component } from "react";
 import Aboutus from "./Aboutus";
 import Logs from "./Logs";
 import Maps from "./Map";
+import Historico from "./History.js";
 export default class Box extends Component {
   Boxstyle() {
     return {
       "background-color": "rgba(19, 161, 180, 0.90)",
-      margin: "30px 60px",
-      height: "800px",
-      top: "-50px",
+      margin: "10px 50px",
+      height: "500px",
+      top: "50px",
       "border-radius": "20px",
     };
   }
@@ -19,8 +20,8 @@ export default class Box extends Component {
       return (
         <Maps data={this.props.data} realTimeData={this.props.realTime}></Maps>
       );
-    } else if (this.props.contenido === "About us") {
-      return <Aboutus></Aboutus>;
+    } else if (this.props.contenido === "Historico") {
+      return <Historico data={this.props.data} realTimeData={this.props.realTime}></Historico>;
     }
   }
 

@@ -5,5 +5,5 @@ export const on = (cb) => {
   connection.on("connect_error", (err) => {
     console.log(`connect_error due to ${err.message}`);
   });
-  connection.on("tcpudp created", cb(connection));
+  connection.on("position created", cb(connection));
 };

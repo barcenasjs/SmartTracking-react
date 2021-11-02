@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, DatePicker, Button, Select } from "antd";
-import "./Map.css";
+import "./History.css";
 import imagen from "./parada-de-taxi.png";
 import {
   GoogleMap,
@@ -11,27 +11,21 @@ import {
   InfoWindow,
 } from "@react-google-maps/api";
 import moment from "moment";
-import { on } from "../Server";
 import { position } from "../service/feathers";
 
-export default function Map(props) {
+export default function Historico(props) {
   const { RangePicker } = DatePicker;
   const [PollyneData, setPollyneData] = useState([]);
-  const [Range, setRange] = useState([]);
   const [history, setHistory] = useState(false);
   const [historyCount, setHistoryCount] = useState([]);
+  const [CAR1, setCAR1] = useState(true);
+  const [CAR2, setCAR2] = useState(false);
   const [markerInfo, setMarkerInfo] = useState(false);
   const [carCount, setCarCount] = useState("1");
+
   //new data
   const [dataCar1, setDataCar1] = useState([]);
   const [dataCar2, setDataCar2] = useState([]);
-
-  const { Option } = Select;
-
-  function handleChange(value) {
-    setCarCount(value);
-    console.log(`selected ${value}`);
-  }
 
   useEffect(() => {
     position
@@ -59,88 +53,6 @@ export default function Map(props) {
   }, []);
 
   useEffect(() => {
-    on((connection) => (geoData) => {
-      position
-        .find({ query: { $limit: 10000 } })
-        .then((res) => {
-          const car1 = res.data
-            .filter((el) => el.user_id === 1)
-            .map((el) => {
-              return { lat: parseFloat(el.lat), lng: parseFloat(el.lng) };
-            });
-          const car2 = res.data
-            .filter((el) => el.user_id === 9)
-            .map((el) => {
-              return { lat: parseFloat(el.lat), lng: parseFloat(el.lng) };
-            });
-          // setHistoryCountCar1(car1[car1.length - 1]);
-          // setHistoryCountCar2(car2[car2.length - 1]);
-          setDataCar1(car1);
-          setDataCar2(car2);
-        })
-        .catch((e) => {
-          alert(e);
-        });
-    });
-  }, []);
-
-  useEffect(() => {
-    if (dataCar2[0]?.lng && dataCar1[0]?.lng) {
-      if (Range.length !== 0) {
-        const positions1 = dataCar1
-          .map((el) => {
-            return {
-              lat: el.lat,
-              lng: el.lng,
-              date: el.date,
-            };
-          })
-          .filter((el) => {
-            return new Date(Range[0]).getTime() < new Date(el.date).getTime();
-          })
-          .filter((el) => {
-            return new Date(el.date).getTime() < new Date(Range[1]).getTime();
-          });
-
-        const positions2 = dataCar2
-          .map((el) => {
-            return {
-              lat: el.lat,
-              lng: el.lng,
-              date: el.date,
-            };
-          })
-          .filter((el) => {
-            return new Date(Range[0]).getTime() < new Date(el.date).getTime();
-          })
-          .filter((el) => {
-            return new Date(el.date).getTime() < new Date(Range[1]).getTime();
-          });
-        alert(JSON.stringify(positions1[0]));
-        setDataCar1(positions1);
-        setDataCar2(positions2);
-      } else {
-        const positions1 = props.data.map((el) => {
-          return {
-            lat: el.lat,
-            lng: el.lng,
-            date: el.date,
-          };
-        });
-        const positions2 = props.data.map((el) => {
-          return {
-            lat: el.lat,
-            lng: el.lng,
-            date: el.date,
-          };
-        });
-        setDataCar2(positions2);
-        setDataCar1(positions1);
-      }
-    }
-  }, []);
-
-  useEffect(() => {
     if (props?.data[0]?.position && historyCount.length === 0) {
       const positions = props.data.map((el) => {
         const objPositions = JSON.parse(el.position);
@@ -155,55 +67,58 @@ export default function Map(props) {
     }
   }, [props.data]);
 
-  useEffect(() => {
-    if (props?.realTimeData[0]?._geoloc?.lng) {
-      setHistoryCount([
-        ...historyCount,
-        {
-          lat: props.realTimeData[0]._geoloc.lat,
-          lng: props.realTimeData[0]._geoloc.lng,
-          date: props.realTimeData[0]._geoloc.date,
-        },
-      ]);
-      console.info(historyCount);
-    }
-  }, [props.realTimeData]);
-
-  useEffect(() => {
-    if (props?.data[0]?.position) {
-      if (Range.length !== 0) {
-        const positions = props.data
-          .map((el) => {
-            const objPositions = JSON.parse(el.position);
-
-            return {
-              lat: objPositions._geoloc.lat,
-              lng: objPositions._geoloc.lng,
-              date: objPositions._geoloc.date,
-            };
-          })
-          .filter((el) => {
-            return new Date(Range[0]).getTime() < new Date(el.date).getTime();
-          })
-          .filter((el) => {
-            return new Date(el.date).getTime() < new Date(Range[1]).getTime();
-          });
-
-        setPollyneData(positions);
-      } else {
-        const positions = props.data.map((el) => {
-          const objPositions = JSON.parse(el.position);
-
-          return {
-            lat: objPositions._geoloc.lat,
-            lng: objPositions._geoloc.lng,
-            date: objPositions._geoloc.date,
-          };
+  const getDataFiltered = (Range) => {
+    position.find({ query: { $limit: 10000 } }).then((res) => {
+      const car1 = res.data
+        .filter((el) => el.user_id === 1)
+        .map((el) => {
+          return { lat: parseFloat(el.lat), lng: parseFloat(el.lng) };
+        })
+        .filter((el) => {
+          return new Date(Range[0]).getTime() < new Date(el.date).getTime();
+        })
+        .filter((el) => {
+          return new Date(el.date).getTime() < new Date(Range[1]).getTime();
         });
-        setPollyneData(positions);
-      }
+
+      const car2 = res.data
+        .filter((el) => el.user_id === 9)
+        .map((el) => {
+          return { lat: parseFloat(el.lat), lng: parseFloat(el.lng) };
+        })
+        .filter((el) => {
+          return new Date(Range[0]).getTime() < new Date(el.date).getTime();
+        })
+        .filter((el) => {
+          return new Date(el.date).getTime() < new Date(Range[1]).getTime();
+        });
+      setDataCar1(car1);
+      setDataCar2(car2);
+    });
+  };
+
+  const { Option } = Select;
+  function handleChange(value) {
+    setCarCount(value);
+    console.log(`selected ${value}`);
+  }
+
+  try {
+    const center = {
+      lat: props.data[1]._geoloc.lat,
+      lng: props.data[1]._geoloc.lng,
+    };
+  } catch {
+    const center = { lat: 10.5, lng: -74 };
+  }
+  const fecha = (m, ds) => {
+    if (ds[1] == "") {
+    } else {
+      getDataFiltered(ds);
+      console.log(Range); //Sync
+      setHistory(true);
     }
-  }, [props.data, Range]);
+  };
 
   console.log(Range);
   const { isLoaded } = useJsApiLoader({
@@ -213,10 +128,14 @@ export default function Map(props) {
 
   return isLoaded ? (
     <>
+      <br></br>
       <Row gutter={[16, 24]}>
-        <Col>
-          {" "}
-          <b></b>{" "}
+        <Col className="gutter-row" span={12}>
+          <RangePicker
+            showTime={{ format: "HH:mm" }}
+            format="YYYY-MM-DD HH:mm"
+            onChange={fecha}
+          />
         </Col>
         <Col className="gutter-row" span={24}>
           <Select
@@ -246,7 +165,10 @@ export default function Map(props) {
             }}
           >
             {markerInfo ? (
-              <InfoWindow position={dataCar2[dataCar2.length - 1]}>
+              <InfoWindow
+                position={dataCar2[dataCar2.length - 1]}
+                shouldFocus={false}
+              >
                 <div>
                   <h3>Vehículo 1</h3>
 
@@ -269,7 +191,10 @@ export default function Map(props) {
             }}
           >
             {markerInfo ? (
-              <InfoWindow position={dataCar1[dataCar1.length - 1]}>
+              <InfoWindow
+                position={dataCar1[dataCar1.length - 1]}
+                shouldFocus={false}
+              >
                 <div>
                   <h3>Vehículo 2</h3>
                   <p>{"Lng: " + dataCar1[dataCar1.length - 1].lng}</p>
@@ -321,6 +246,7 @@ export default function Map(props) {
           ></Polyline>
         ) : null}
       </GoogleMap>
+      <br></br>
     </>
   ) : (
     <></>
