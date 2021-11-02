@@ -173,7 +173,7 @@ export default function Historico(props) {
             ? dataCar1[dataCar1.length - 1]
             : carCount === "2"
             ? dataCar2[dataCar2.length - 1]
-            : { lat: -74.85, lng: 11.019 }
+            : { lat:11.018806 , lng: -74.850631 }
         }
         zoom={14}
         id="map"
