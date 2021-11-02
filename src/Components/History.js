@@ -154,7 +154,7 @@ export default function Historico(props) {
             onChange={fecha}
           />
         </Col>
-        <Col className="gutter-row" span={24}>
+        <Col className="gutter-row" span={12}>
           <Select
             defaultValue={`Vehículo ${carCount}`}
             style={{ width: 120 }}

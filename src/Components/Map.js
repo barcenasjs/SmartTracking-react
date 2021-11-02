@@ -34,43 +34,10 @@ export default function Map(props) {
   }
 
   useEffect(() => {
-    position
-      .find({
-        query: { $limit: 10000 },
-      })
-      .then((res) => {
-        const car1 = res.data
-          .filter((el) => el.user_id === 1)
-          .map((el) => {
-            return {
-              lat: parseFloat(el.lat),
-              lng: parseFloat(el.lng),
-              date: el.date,
-            };
-          });
-        const car2 = res.data
-          .filter((el) => el.user_id === 9)
-          .map((el) => {
-            return {
-              lat: parseFloat(el.lat),
-              lng: parseFloat(el.lng),
-              date: el.date,
-            };
-          });
-
-        setDataCar1(car1);
-        setDataCar2(car2);
-      })
-      .catch((e) => {
-        alert(e);
-      });
-  }, []);
-
-  useEffect(() => {
     on((connection) => (geoData) => {
       position
         .find({ query: { $limit: 10000 } })
-        .then((res) => {
+        .then( (res) => {
           const car1 = res.data
             .filter((el) => el.user_id === 1)
             .map((el) => {
@@ -91,135 +58,15 @@ export default function Map(props) {
             });
           // setHistoryCountCar1(car1[car1.length - 1]);
           // setHistoryCountCar2(car2[car2.length - 1]);
-          setDataCar1(car1);
+          setDataCar1([...dataCar1, car1[car1.length - 1]]);
           setDataCar2(car2);
+          console.log(dataCar1.concat(car1[car1.length - 1]));
         })
         .catch((e) => {
           alert(e);
         });
     });
   }, []);
-
-  useEffect(() => {
-    if (dataCar2[0]?.lng && dataCar1[0]?.lng) {
-      if (Range.length !== 0) {
-        const positions1 = dataCar1
-          .map((el) => {
-            return {
-              lat: el.lat,
-              lng: el.lng,
-              date: el.date,
-            };
-          })
-          .filter((el) => {
-            return new Date(Range[0]).getTime() < new Date(el.date).getTime();
-          })
-          .filter((el) => {
-            return new Date(el.date).getTime() < new Date(Range[1]).getTime();
-          });
-
-        const positions2 = dataCar2
-          .map((el) => {
-            return {
-              lat: el.lat,
-              lng: el.lng,
-              date: el.date,
-            };
-          })
-          .filter((el) => {
-            return new Date(Range[0]).getTime() < new Date(el.date).getTime();
-          })
-          .filter((el) => {
-            return new Date(el.date).getTime() < new Date(Range[1]).getTime();
-          });
-        alert(JSON.stringify(positions1[0]));
-        setDataCar1(positions1);
-        setDataCar2(positions2);
-      } else {
-        const positions1 = props.data.map((el) => {
-          return {
-            lat: el.lat,
-            lng: el.lng,
-            date: el.date,
-          };
-        });
-        const positions2 = props.data.map((el) => {
-          return {
-            lat: el.lat,
-            lng: el.lng,
-            date: el.date,
-          };
-        });
-        setDataCar2(positions2);
-        setDataCar1(positions1);
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    if (props?.data[0]?.position && historyCount.length === 0) {
-      const positions = props.data.map((el) => {
-        const objPositions = JSON.parse(el.position);
-
-        return {
-          lat: objPositions._geoloc.lat,
-          lng: objPositions._geoloc.lng,
-          date: objPositions._geoloc.date,
-        };
-      });
-      setHistoryCount([positions[positions.length - 1]]);
-    }
-  }, [props.data]);
-
-  useEffect(() => {
-    if (props?.realTimeData[0]?._geoloc?.lng) {
-      setHistoryCount([
-        ...historyCount,
-        {
-          lat: props.realTimeData[0]._geoloc.lat,
-          lng: props.realTimeData[0]._geoloc.lng,
-          date: props.realTimeData[0]._geoloc.date,
-        },
-      ]);
-      console.info(historyCount);
-    }
-  }, [props.realTimeData]);
-
-  useEffect(() => {
-    if (props?.data[0]?.position) {
-      if (Range.length !== 0) {
-        const positions = props.data
-          .map((el) => {
-            const objPositions = JSON.parse(el.position);
-
-            return {
-              lat: objPositions._geoloc.lat,
-              lng: objPositions._geoloc.lng,
-              date: objPositions._geoloc.date,
-            };
-          })
-          .filter((el) => {
-            return new Date(Range[0]).getTime() < new Date(el.date).getTime();
-          })
-          .filter((el) => {
-            return new Date(el.date).getTime() < new Date(Range[1]).getTime();
-          });
-
-        setPollyneData(positions);
-      } else {
-        const positions = props.data.map((el) => {
-          const objPositions = JSON.parse(el.position);
-
-          return {
-            lat: objPositions._geoloc.lat,
-            lng: objPositions._geoloc.lng,
-            date: objPositions._geoloc.date,
-          };
-        });
-        setPollyneData(positions);
-      }
-    }
-  }, [props.data, Range]);
 
   console.log(Range);
   const { isLoaded } = useJsApiLoader({
