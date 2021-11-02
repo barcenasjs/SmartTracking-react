@@ -42,12 +42,20 @@ export default function Map(props) {
         const car1 = res.data
           .filter((el) => el.user_id === 1)
           .map((el) => {
-            return { lat: parseFloat(el.lat), lng: parseFloat(el.lng) };
+            return {
+              lat: parseFloat(el.lat),
+              lng: parseFloat(el.lng),
+              date: el.date,
+            };
           });
         const car2 = res.data
           .filter((el) => el.user_id === 9)
           .map((el) => {
-            return { lat: parseFloat(el.lat), lng: parseFloat(el.lng) };
+            return {
+              lat: parseFloat(el.lat),
+              lng: parseFloat(el.lng),
+              date: el.date,
+            };
           });
 
         setDataCar1(car1);
@@ -66,12 +74,20 @@ export default function Map(props) {
           const car1 = res.data
             .filter((el) => el.user_id === 1)
             .map((el) => {
-              return { lat: parseFloat(el.lat), lng: parseFloat(el.lng) };
+              return {
+                lat: parseFloat(el.lat),
+                lng: parseFloat(el.lng),
+                date: el.date,
+              };
             });
           const car2 = res.data
             .filter((el) => el.user_id === 9)
             .map((el) => {
-              return { lat: parseFloat(el.lat), lng: parseFloat(el.lng) };
+              return {
+                lat: parseFloat(el.lat),
+                lng: parseFloat(el.lng),
+                date: el.date,
+              };
             });
           // setHistoryCountCar1(car1[car1.length - 1]);
           // setHistoryCountCar2(car2[car2.length - 1]);
@@ -232,7 +248,13 @@ export default function Map(props) {
       </Row>
       <GoogleMap
         mapContainerClassName="mapa"
-        center={dataCar2[dataCar2.length - 1]}
+        center={
+          carCount === "1"
+            ? dataCar1[dataCar1.length - 1]
+            : carCount === "2"
+            ? dataCar2[dataCar2.length - 1]
+            : { lat: -74.85, lng: 11.019 }
+        }
         zoom={14}
         id="map"
       >

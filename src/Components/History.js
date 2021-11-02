@@ -36,12 +36,20 @@ export default function Historico(props) {
         const car1 = res.data
           .filter((el) => el.user_id === 1)
           .map((el) => {
-            return { lat: parseFloat(el.lat), lng: parseFloat(el.lng) };
+            return {
+              lat: parseFloat(el.lat),
+              lng: parseFloat(el.lng),
+              date: el.date,
+            };
           });
         const car2 = res.data
           .filter((el) => el.user_id === 9)
           .map((el) => {
-            return { lat: parseFloat(el.lat), lng: parseFloat(el.lng) };
+            return {
+              lat: parseFloat(el.lat),
+              lng: parseFloat(el.lng),
+              date: el.date,
+            };
           });
 
         setDataCar1(car1);
@@ -72,7 +80,11 @@ export default function Historico(props) {
       const car1 = res.data
         .filter((el) => el.user_id === 1)
         .map((el) => {
-          return { lat: parseFloat(el.lat), lng: parseFloat(el.lng) };
+          return {
+            lat: parseFloat(el.lat),
+            lng: parseFloat(el.lng),
+            date: el.date,
+          };
         })
         .filter((el) => {
           return new Date(Range[0]).getTime() < new Date(el.date).getTime();
@@ -84,7 +96,11 @@ export default function Historico(props) {
       const car2 = res.data
         .filter((el) => el.user_id === 9)
         .map((el) => {
-          return { lat: parseFloat(el.lat), lng: parseFloat(el.lng) };
+          return {
+            lat: parseFloat(el.lat),
+            lng: parseFloat(el.lng),
+            date: el.date,
+          };
         })
         .filter((el) => {
           return new Date(Range[0]).getTime() < new Date(el.date).getTime();
@@ -92,6 +108,7 @@ export default function Historico(props) {
         .filter((el) => {
           return new Date(el.date).getTime() < new Date(Range[1]).getTime();
         });
+
       setDataCar1(car1);
       setDataCar2(car2);
     });
@@ -151,7 +168,13 @@ export default function Historico(props) {
       </Row>
       <GoogleMap
         mapContainerClassName="mapa"
-        center={dataCar2[dataCar2.length - 1]}
+        center={
+          carCount === "1"
+            ? dataCar1[dataCar1.length - 1]
+            : carCount === "2"
+            ? dataCar2[dataCar2.length - 1]
+            : { lat: -74.85, lng: 11.019 }
+        }
         zoom={14}
         id="map"
       >
