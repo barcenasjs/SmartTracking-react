@@ -117,7 +117,7 @@ export default function Historico(props) {
   const { Option } = Select;
   function handleChange(value) {
     setCarCount(value);
-    console.log(`selected ${value}`);
+
   }
 
   try {
@@ -132,12 +132,12 @@ export default function Historico(props) {
     if (ds[1] == "") {
     } else {
       getDataFiltered(ds);
-      console.log(Range); //Sync
+
       setHistory(true);
     }
   };
 
-  console.log(Range);
+
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: "AIzaSyAjxpJcSdf7dnbP8rj6bPFku1uFUHgNwco",

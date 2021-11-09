@@ -37,7 +37,7 @@ export default function Map(props) {
     on((connection) => (geoData) => {
       position
         .find({ query: { $limit: 10000 } })
-        .then( (res) => {
+        .then((res) => {
           const car1 = res.data
             .filter((el) => el.user_id === 1)
             .map((el) => {
@@ -58,9 +58,8 @@ export default function Map(props) {
             });
           // setHistoryCountCar1(car1[car1.length - 1]);
           // setHistoryCountCar2(car2[car2.length - 1]);
-          setDataCar1([...dataCar1, car1[car1.length - 1]]);
+          setDataCar1(car1);
           setDataCar2(car2);
-          console.log(dataCar1.concat(car1[car1.length - 1]));
         })
         .catch((e) => {
           alert(e);
