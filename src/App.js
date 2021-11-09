@@ -8,6 +8,7 @@ import { on } from "./Server";
 import moment from "moment";
 
 import { position } from "./service/feathers";
+import { Footer } from "antd/lib/layout/layout";
 
 function App() {
   const [Data, setData] = useState([]);
@@ -56,12 +57,15 @@ function App() {
 
                     </ul>
                 </nav>
+                <article className="body">
                 <Route exact path="/">
                     <Box contenido="Maps" data={positions} realTime={Data}></Box>
                 </Route>
                 <Route path="/History">
                 <Box contenido="Historico" data={positions} realTime={Data}></Box>
                 </Route>
+                </article>
+                <sidebar>hello</sidebar>
       </Router>
 
 

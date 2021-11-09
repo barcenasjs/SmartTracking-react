@@ -1,6 +1,7 @@
 .App {
     text-align: center;
     background-image: url(https://images.unsplash.com/photo-1490650404312-a2175773bbf5?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=870&q=80);
+
 }
 
 .App-logo {
@@ -64,5 +65,7 @@
 }
 
 
-
+.body{
+    height: 700px;
+}
 

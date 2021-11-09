@@ -1,18 +1,9 @@
 import React, { Component } from "react";
-import Aboutus from "./Aboutus";
-import Logs from "./Logs";
+import "./Box.css";
 import Maps from "./Map";
 import Historico from "./History.js";
 export default class Box extends Component {
-  Boxstyle() {
-    return {
-      "background-color": "rgba(19, 161, 180, 0.90)",
-      margin: "10px 50px",
-      height: "500px",
-      top: "50px",
-      "border-radius": "20px",
-    };
-  }
+ 
   Content(props) {
     if (this.props.contenido === "Home") {
       return <p style={{ "margin-block-start": "0px", padding: "10px" }}></p>;
@@ -26,6 +17,6 @@ export default class Box extends Component {
   }
 
   render(props) {
-    return <div style={this.Boxstyle()}>{this.Content()}</div>;
+    return <div className="box">{this.Content()}</div>;
   }
 }
