@@ -134,6 +134,7 @@ export default function Map(props) {
                   <p>{"Lng: " + dataCar2[dataCar2.length - 1].lng}</p>
                   <p>{"Lat: " + dataCar2[dataCar2.length - 1].lat}</p>
                   <p>{"Fecha: " + dataCar2[dataCar2.length - 1].date}</p>
+                  <p>{"RPM: null"} </p>
                 </div>
               </InfoWindow>
             ) : null}
@@ -156,6 +157,7 @@ export default function Map(props) {
                   <p>{"Lng: " + dataCar1[dataCar1.length - 1].lng}</p>
                   <p>{"Lat: " + dataCar1[dataCar1.length - 1].lat}</p>
                   <p>{"Fecha: " + dataCar1[dataCar1.length - 1].date}</p>
+                  <p>{"RPM: null"} </p>
                 </div>
               </InfoWindow>
             ) : null}

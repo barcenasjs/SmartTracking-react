@@ -5,10 +5,10 @@ import Box from "./Components/Box";
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Link, Route } from "react-router-dom";
 import { on } from "./Server";
-import moment from "moment";
+
 
 import { position } from "./service/feathers";
-import { Footer } from "antd/lib/layout/layout";
+
 
 function App() {
   const [Data, setData] = useState([]);
@@ -65,7 +65,7 @@ function App() {
                 <Box contenido="Historico" data={positions} realTime={Data}></Box>
                 </Route>
                 </article>
-                <sidebar>hello</sidebar>
+                
       </Router>
 
 

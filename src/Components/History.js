@@ -171,14 +171,7 @@ function punto2(q){
 }
 
 
-  try {
-    const center = {
-      lat: props.data[1]._geoloc.lat,
-      lng: props.data[1]._geoloc.lng,
-    };
-  } catch {
-    const center = { lat: 10.5, lng: -74 };
-  }
+  
   const fecha = (m, ds) => {
     if (ds[1] == "") {
     } else {
@@ -274,7 +267,7 @@ function punto2(q){
                   <p>{"Lng: " + dataCar2[dataCar2.length - 1].lng }</p>
                   <p>{"Lat: " + dataCar2[dataCar2.length - 1].lat}</p>
                   <p>{"Fecha: " + dataCar2[dataCar2.length - 1].date}</p>
-                  
+                  <p>{"RPM: " + "null"}</p>
                 </div>
               </InfoWindow>
             ) : null}
@@ -300,6 +293,7 @@ function punto2(q){
                   <p>{"Lng: " + dataCar1[dataCar1.length - 1].lng}</p>
                   <p>{"Lat: " + dataCar1[dataCar1.length - 1].lat}</p>
                   <p>{"Fecha: " + dataCar1[dataCar1.length - 1].date}</p>
+                  <p>{"RPM: " + "null"}</p>
                 </div>
               </InfoWindow>
             ) : null}
