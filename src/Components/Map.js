@@ -17,15 +17,12 @@ import { position } from "../service/feathers";
 
 export default function Map(props) {
   
-  
-
-  
   const [markerInfo, setMarkerInfo] = useState(false);
   const [carCount, setCarCount] = useState("1");
   //new data
   const [dataCar1, setDataCar1] = useState([]);
   const [dataCar2, setDataCar2] = useState([]);
-  
+  const [changing, setChanging] = useState(true)
   const { Option } = Select;
 
   function handleChange(value) {
@@ -58,14 +55,47 @@ export default function Map(props) {
             });
           // setHistoryCountCar1(car1[car1.length - 1]);
           // setHistoryCountCar2(car2[car2.length - 1]);
-          setDataCar1(car1);
-          setDataCar2(car2);
+          setChanging(!changing)
         })
         .catch((e) => {
           alert(e);
         });
     });
   }, []);
+
+  useEffect(()=>{  
+    position
+        .find({ query: { $limit: 10000 } })
+        .then((res) => {
+          const car1 = res.data
+            .filter((el) => el.user_id === 1)
+            .map((el) => {
+              return {
+                lat: parseFloat(el.lat),
+                lng: parseFloat(el.lng),
+                date: el.date,
+              };
+            });
+          const car2 = res.data
+            .filter((el) => el.user_id === 9)
+            .map((el) => {
+              return {
+                lat: parseFloat(el.lat),
+                lng: parseFloat(el.lng),
+                date: el.date,
+              };
+            });
+          // setHistoryCountCar1(car1[car1.length - 1]);
+          // setHistoryCountCar2(car2[car2.length - 1]);
+          setDataCar1(dataCar1.concat(car1[car1.length-1]));
+          setDataCar2(dataCar2.concat(car2[car2.length-1]));
+        })
+        .catch((e) => {
+          alert(e);
+        });
+
+     },[changing])
+  
   
   
   const { isLoaded } = useJsApiLoader({
@@ -134,7 +164,6 @@ export default function Map(props) {
                   <p>{"Lng: " + dataCar2[dataCar2.length - 1].lng}</p>
                   <p>{"Lat: " + dataCar2[dataCar2.length - 1].lat}</p>
                   <p>{"Fecha: " + dataCar2[dataCar2.length - 1].date}</p>
-                  <p>{"RPM: null"} </p>
                 </div>
               </InfoWindow>
             ) : null}
@@ -156,8 +185,7 @@ export default function Map(props) {
                   <h3>Vehículo 1</h3>
                   <p>{"Lng: " + dataCar1[dataCar1.length - 1].lng}</p>
                   <p>{"Lat: " + dataCar1[dataCar1.length - 1].lat}</p>
-                  <p>{"Fecha: " + dataCar1[dataCar1.length - 1].date}</p>
-                  <p>{"RPM: null"} </p>
+                  <p>{"Fecha: "  + dataCar1[dataCar1.length - 1].date}</p>
                 </div>
               </InfoWindow>
             ) : null}
