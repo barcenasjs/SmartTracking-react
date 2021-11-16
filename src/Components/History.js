@@ -34,16 +34,22 @@ export default function Historico(props) {
         const car1 = res.data
           .filter((el) => el.user_id === 1)
           .map((el) => {
-            return { lat: parseFloat(el.lat), lng: parseFloat(el.lng) ,date:el.date};
+            return { 
+              lat: parseFloat(el.lat), 
+              lng: parseFloat(el.lng),
+              date:el.date};
           });
         const car2 = res.data
           .filter((el) => el.user_id === 9)
           .map((el) => {
-            return { lat: parseFloat(el.lat), lng: parseFloat(el.lng) ,date:el.date};
+            return { 
+              lat: parseFloat(el.lat), 
+              lng: parseFloat(el.lng),
+              date:el.date};
           });
 
-        setDataCar1(car1);
-        setDataCar2(car2);
+        setDataCar1(dataCar1.concat(car1[car1.length-1]));
+        setDataCar2(dataCar2.concat(car2[car2.length-1]));
       })
       .catch((e) => {
         alert(e);
