@@ -15,89 +15,52 @@ import {
 import { on } from "../Server";
 import { position } from "../service/feathers";
 
-export default function Map(props) {
-  
+export default function Map({ realTimeData }) {
   const [markerInfo, setMarkerInfo] = useState(false);
   const [carCount, setCarCount] = useState("1");
   //new data
   const [dataCar1, setDataCar1] = useState([]);
   const [dataCar2, setDataCar2] = useState([]);
-  const [changing, setChanging] = useState(true)
   const { Option } = Select;
 
   function handleChange(value) {
     setCarCount(value);
     console.log(`selected ${value}`);
   }
-  
+
   useEffect(() => {
-    on((connection) => (geoData) => {
-      position
-        .find({ query: { $limit: 10000 } })
-        .then((res) => {
-          const car1 = res.data
-            .filter((el) => el.user_id === 1)
-            .map((el) => {
-              return {
-                lat: parseFloat(el.lat),
-                lng: parseFloat(el.lng),
-                date: el.date,
-              };
-            });
-          const car2 = res.data
-            .filter((el) => el.user_id === 9)
-            .map((el) => {
-              return {
-                lat: parseFloat(el.lat),
-                lng: parseFloat(el.lng),
-                date: el.date,
-              };
-            });
-          // setHistoryCountCar1(car1[car1.length - 1]);
-          // setHistoryCountCar2(car2[car2.length - 1]);
-          setChanging(!changing)
-        })
-        .catch((e) => {
-          alert(e);
-        });
-    });
-  }, []);
-
-  useEffect(()=>{  
     position
-        .find({ query: { $limit: 10000 } })
-        .then((res) => {
-          const car1 = res.data
-            .filter((el) => el.user_id === 1)
-            .map((el) => {
-              return {
-                lat: parseFloat(el.lat),
-                lng: parseFloat(el.lng),
-                date: el.date,
-              };
-            });
-          const car2 = res.data
-            .filter((el) => el.user_id === 9)
-            .map((el) => {
-              return {
-                lat: parseFloat(el.lat),
-                lng: parseFloat(el.lng),
-                date: el.date,
-              };
-            });
-          // setHistoryCountCar1(car1[car1.length - 1]);
-          // setHistoryCountCar2(car2[car2.length - 1]);
-          setDataCar1(dataCar1.concat(car1[car1.length-1]));
-          setDataCar2(dataCar2.concat(car2[car2.length-1]));
-        })
-        .catch((e) => {
-          alert(e);
-        });
+      .find({ query: { $limit: 10000 } })
+      .then((res) => {
+        const car1 = res.data
+          .filter((el) => el.user_id === 1)
+          .map((el) => {
+            return {
+              lat: parseFloat(el.lat),
+              lng: parseFloat(el.lng),
+              date: el.date,
+            };
+          });
+        const car2 = res.data
+          .filter((el) => el.user_id === 9)
+          .map((el) => {
+            return {
+              lat: parseFloat(el.lat),
+              lng: parseFloat(el.lng),
+              date: el.date,
+            };
+          });
+        // setHistoryCountCar1(car1[car1.length - 1]);
+        // setHistoryCountCar2(car2[car2.length - 1]);
+        setDataCar1(dataCar1.concat(car1[car1.length - 1]));
+        setDataCar2(dataCar2.concat(car2[car2.length - 1]));
+        console.log(dataCar2.concat(car2[car2.length - 1]));
+      })
+      .catch((e) => {
+        alert(e);
+      });
+  }, [realTimeData]);
 
-     },[changing])
-  
-  
-  
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: "AIzaSyAjxpJcSdf7dnbP8rj6bPFku1uFUHgNwco",
@@ -131,18 +94,22 @@ export default function Map(props) {
             ? dataCar2[dataCar2.length - 1]
             : null
         }
-        options={{clickable:true,
-          disableDefaultUI:true,
-          zoomControl:true,
-          styles:[{
-            featureType: "poi", 
-            elementType: "labels",
-            stylers: [{ visibility: "off" }]},
+        options={{
+          clickable: true,
+          disableDefaultUI: true,
+          zoomControl: true,
+          styles: [
             {
-              featureType: "administrative", 
+              featureType: "poi",
               elementType: "labels",
-              stylers: [{ visibility: "off" }]}
-          ]
+              stylers: [{ visibility: "off" }],
+            },
+            {
+              featureType: "administrative",
+              elementType: "labels",
+              stylers: [{ visibility: "off" }],
+            },
+          ],
         }}
         zoom={14}
         id="map"
@@ -185,7 +152,7 @@ export default function Map(props) {
                   <h3>Vehículo 1</h3>
                   <p>{"Lng: " + dataCar1[dataCar1.length - 1].lng}</p>
                   <p>{"Lat: " + dataCar1[dataCar1.length - 1].lat}</p>
-                  <p>{"Fecha: "  + dataCar1[dataCar1.length - 1].date}</p>
+                  <p>{"Fecha: " + dataCar1[dataCar1.length - 1].date}</p>
                 </div>
               </InfoWindow>
             ) : null}
